@@ -1,3 +1,4 @@
+const path = require("path");
 const webpack = require('webpack')
 const withCss = require('@zeit/next-css')
 const withTypescript = require('@zeit/next-typescript')
@@ -20,9 +21,10 @@ const configs = {
   //   return null // 返回null使用默认的unique id
   // },
   // // 手动修改webpack config
-  // webpack(config, options) {
-  //   return config
-  // },
+  webpack(config, options) {
+    config.resolve.alias['$components'] = path.join(__dirname, 'components')
+    return config
+  },
   // // 修改webpackDevMiddleware配置
   // webpackDevMiddleware: config => {
   //   return config
