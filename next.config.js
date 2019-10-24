@@ -1,7 +1,6 @@
 const path = require("path");
 const webpack = require('webpack')
 const withCss = require('@zeit/next-css')
-const withTypescript = require('@zeit/next-typescript')
 
 const configUrls = require("./configUrls");
 const configs = {
@@ -49,4 +48,4 @@ const configs = {
 if (typeof require !== 'undefined')
   require.extensions['.css'] = file => {}
 // 合并nextJS配置
-module.exports = withCss(withTypescript(configs))
+module.exports = withCss(configs)
