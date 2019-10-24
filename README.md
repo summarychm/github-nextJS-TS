@@ -5,7 +5,7 @@
 ### 所用 package
 
     npm install -S react react-dom next @zeit/next-css @zeit/next-typescript
-    npm install -S cross-env nodemon eslint-plugin-react-hooks
+    npm install -D cross-env nodemon jest eslint eslint-plugin-react eslint-plugin-react-hooks
     npm install -S ioredis jest
     npm install -S koa koa-router koa-session koa-body
 
