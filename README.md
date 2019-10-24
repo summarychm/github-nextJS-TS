@@ -16,3 +16,4 @@
 [x] 配置 ts+nodemen 开发 server 的开发环境  
 [x] 将 static 移动到 public 目录下[refer](https://github.com/zeit/next.js/blob/master/errors/static-dir-deprecated.md)
 [x] 移除对@zeit/next-typescript 的依赖,next.js 新版已经内置对 ts 的支持
+[] 移除\_app.tsx 中 Container 标签,新版直接写 return Component

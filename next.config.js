@@ -28,10 +28,10 @@ const configs = {
   // webpackDevMiddleware: config => {
   //   return config
   // },
-  // // 可以在页面上通过 procsess.env.customKey 获取 value
-  // env: {
-  //   customKey: 'value',
-  // },
+  // 在组件中通过process.env.xxx获取对应的值
+  env: {
+    customKey: 'value',
+  },
   // // 下面两个要通过 'next/config' 来读取
   // // 只有在服务端渲染时才会获取的配置
   // serverRuntimeConfig: {
