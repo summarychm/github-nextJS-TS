@@ -4,3 +4,6 @@ config.js
 dest
 .vscode
 local-code
+
+.DS_Store
+.env
