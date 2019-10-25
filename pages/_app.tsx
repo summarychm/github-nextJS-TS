@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import "antd/dist/antd.css";
 import "../public/style/global.css";
 
-import Layout from "$components/Layout";
+import Layout from "../layouts/Layout";
 
 export default class MyApp extends App {
 	// 每次路由变化都会触发该方法

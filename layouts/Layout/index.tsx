@@ -1,6 +1,9 @@
 import { CSSProperties, ReactChild } from "react";
 import { Dropdown, Layout, Icon, Menu, Avatar, Input, Tooltip } from "antd";
 import Link from "next/link";
+
+import Container from "../Components/Container";
+
 const { Header, Content, Footer } = Layout;
 
 interface iStyle {
@@ -27,7 +30,7 @@ function MyLayout(props: iProps) {
 	return (
 		<Layout>
 			<Header>
-				<div className="header-inner">
+				<Container Component={<div className="header-inner" />}>
 					<div className="header-left">
 						<div className="logo">
 							<Link href="/">
@@ -47,7 +50,7 @@ function MyLayout(props: iProps) {
 							</Tooltip>
 						</div>
 					</div>
-				</div>
+				</Container>
 			</Header>
 			<Content>{children}</Content>
 			<Footer style={styleObj.footer}>Develop by max</Footer>

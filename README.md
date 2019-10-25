@@ -19,5 +19,6 @@
 [x] 将 static 移动到 public 目录下[refer](https://github.com/zeit/next.js/blob/master/errors/static-dir-deprecated.md)  
 [x] 移除对@zeit/next-typescript 的依赖,next.js 新版已经内置对 ts 的支持  
 [x] 移除\_app.tsx 中 Container 标签,新版直接写 return Component  
-[x] 引入了 eslint 进行校验,并加入 react-hooks 的校验规则
-[x] 将公共样式抽离到单独的 css 文件中
+[x] 引入了 eslint 进行校验,并加入 react-hooks 的校验规则  
+[x] 将公共样式抽离到单独的 css 文件中  
+[x] 创建 Container 组件,根据 Component(ReactElement/string)属性动态创建组件并将 children 作为自身属性渲染,减少 dom 层次,提升灵活性
