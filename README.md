@@ -8,6 +8,7 @@
     npm install -D cross-env nodemon jest eslint eslint-plugin-react eslint-plugin-react-hooks
     npm install -S ioredis jest
     npm install -S koa koa-router koa-session koa-body
+    npm install -S redux react-redux redux-thunk
 
 ### TODO List
 
