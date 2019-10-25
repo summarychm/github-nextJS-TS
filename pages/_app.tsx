@@ -1,7 +1,13 @@
 import App from "next/app";
+import { Provider } from "react-redux";
+
+import "antd/dist/antd.css";
+import "../public/style/global.css";
+
+import Layout from "$components/Layout";
 
 export default class MyApp extends App {
-	// 需继承App,每次路由变化都会触发该方法
+	// 每次路由变化都会触发该方法
 	static async getInitialProps(ctx) {
 		const { Component } = ctx; // Component:当前要渲染的页面组件
 		let pageProps = {};
@@ -10,7 +16,14 @@ export default class MyApp extends App {
 		return { pageProps };
 	}
 	render() {
+		//, reduxStore
 		const { Component, pageProps } = this.props;
-		return <Component {...pageProps} />;
+		return (
+			// <Provider store={reduxStore}>
+			<Layout>
+				<Component {...pageProps} />
+			</Layout>
+			// </Provider>
+		);
 	}
 }

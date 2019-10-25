@@ -1,0 +1,13 @@
+#__next {
+	height: 100%;
+}
+.ant-layout {
+	min-height: 100%;
+}
+.ant-layout-header {
+	padding-left: 0;
+	padding-right: 0;
+}
+.ant-layout-content {
+	background: #fff;
+}

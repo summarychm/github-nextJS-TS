@@ -9,6 +9,7 @@
     npm install -S ioredis jest
     npm install -S koa koa-router koa-session koa-body
     npm install -S redux react-redux redux-thunk
+    npm install -S antd
 
 ### TODO List
 
@@ -19,3 +20,4 @@
 [x] 移除对@zeit/next-typescript 的依赖,next.js 新版已经内置对 ts 的支持  
 [x] 移除\_app.tsx 中 Container 标签,新版直接写 return Component  
 [x] 引入了 eslint 进行校验,并加入 react-hooks 的校验规则
+[x] 将公共样式抽离到单独的 css 文件中
