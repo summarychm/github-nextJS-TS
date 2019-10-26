@@ -4,7 +4,7 @@
 	"description": "使用TS+next.js+KOA+Oauth实现的github-web",
 	"main": "index.js",
 	"scripts": {
-		"dev": "nodemon",
+		"dev": "cross-env PORT=8080 nodemon",
 		"build": "next build && tsc --project tsconfig.server.json",
 		"start": "cross-env NODE_ENV=production node dist/index.js"
 	},
@@ -27,6 +27,7 @@
 	"homepage": "https://github.com/summarychm/github-nextJS-TS#readme",
 	"dependencies": {
 		"@types/antd": "^1.0.0",
+		"@types/axios": "^0.14.0",
 		"@types/koa": "^2.0.51",
 		"@types/koa-router": "^7.0.42",
 		"@types/koa-session": "^5.10.1",
@@ -42,6 +43,7 @@
 		"@zeit/next-css": "^1.0.1",
 		"@zeit/next-typescript": "^1.1.1",
 		"antd": "^3.24.2",
+		"axios": "^0.19.0",
 		"ioredis": "^4.14.1",
 		"koa": "^2.10.0",
 		"koa-body": "^4.1.1",

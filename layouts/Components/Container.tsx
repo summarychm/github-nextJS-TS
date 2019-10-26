@@ -1,4 +1,4 @@
-// 创建 Container 组件,根据 Component(ReactElement/string)属性动态创建组件并将 children 作为自身属性渲染,减少 dom 层次,提升灵活性
+// 根据 Component属性(ReactElement/string)动态创建组件,并将获取到的props都作为自身属性渲染,减少 dom 层次,提升灵活性
 import React, { ReactChild, ReactElement } from "react";
 
 const styleObj = {

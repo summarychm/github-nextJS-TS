@@ -9,12 +9,13 @@
     npm install -S ioredis jest
     npm install -S koa koa-router koa-session koa-body
     npm install -S redux react-redux redux-thunk
-    npm install -S antd
+    npm install -S antd axios
 
 ### TODO List
 
 [x] :sparkles:测试连接 redis  
 [x] :sparkles:创建 Container 组件,根据 Component(ReactElement/string)属性动态创建组件并将 children 作为自身属性渲染,减少 dom 层次,提升灵活性
+[x] :sparkles:支持 githubOauth 登录.并将 oauth 信息写入 redux.
 
 [x] :zap:配置 ts&webpack,支持 alias,方便开发  
 [x] :zap:配置 ts+nodemen 开发 server 的开发环境  
@@ -24,5 +25,6 @@
 [x] :zap:引入了 eslint 进行校验,并加入 react-hooks 的校验规则  
 [x] :zap:将公共样式抽离到单独的 css 文件中  
 [x] :zap:将 redux-dev-tools 的引入方式改为使用 redux-devtools-extension 这个 package,因为 next.js+ts 环境下 window is not defined
+[x] :zap:将 Server 的路由抽离为单独的 routers.ts 文件,便于拓展.
 
 [x] :bug:在 Request 时将 session 写入 redux,并发下给 Client 端,Client 基于该 state 创建 redux

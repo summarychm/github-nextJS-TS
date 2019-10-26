@@ -22,7 +22,7 @@ class MyApp extends App<iProps> {
 	static async getInitialProps(ctx) {
 		const { Component } = ctx; // Component:当前要渲染的页面组件
 		let pageProps = {};
-		//调用要渲染组件的getInitialProps
+		//调用要渲染组件的 getInitialProps
 		if (Component.getInitialProps) pageProps = await Component.getInitialProps(ctx);
 		return { pageProps };
 	}

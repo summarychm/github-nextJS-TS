@@ -1,13 +1,10 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import { Store } from "redux";
+
 import createRootStore from "../store";
 
 const isServer = !process.browser;
-const __NEXT_REDUX_STORE__ = "__NEXT_REDUX_STORE__"; // Symbol("__NEXT_REDUX_STORE__");
-
-interface iWithReduxStore {
-	(WrappedComponent: ReactElement): ReactElement;
-}
+const __NEXT_REDUX_STORE__ = "__NEXT_REDUX_STORE__";
 
 // 获取/创建store实例(Server&Client端通用)
 function getOrCreateStore(initialState?): Store {
@@ -16,7 +13,7 @@ function getOrCreateStore(initialState?): Store {
 		console.log("Server端运行!");
 		return createRootStore(initialState);
 	}
-	// Client端使用全局变量缓存
+	// Client端共用同一store并使用全局变量缓存
 	else {
 		console.log("client端运行!");
 		let localReduxStore = window[__NEXT_REDUX_STORE__];
@@ -33,29 +30,30 @@ const withReduxStore = (WrappedComponent) => {
 	return class WithComponent extends React.Component<iProps> {
 		static async getInitialProps(appContext) {
 			// 设置server端redux的初始值,如token信息
-			let initialValue = {};
+			let initialValue = {},
+				appProps = {};
 			if (isServer) {
-				const session = appContext.ctx.res.session;
-				if (session) initialValue = session.userInfo;
+				const session = appContext.ctx.req.session; //读取用户信息写入redux
+				if (session) initialValue = { user: session.userInfo };
 			}
 
-			const reduxStore = getOrCreateStore(initialValue); // 创建/获取store
-			appContext.reduxStore = reduxStore; //挂载到ctx
+			const store = getOrCreateStore(initialValue); // 创建/获取store
+			appContext.reduxStore = store; //挂载到ctx
 
-			let appProps = {};
-			// 调用子组件的 getInitialProps进行初始化
+			// 调用子组件的 getInitialProps 获取初始化所需的pops
 			if (typeof WrappedComponent.getInitialProps === "function") {
 				appProps = await WrappedComponent.getInitialProps(appContext);
 			}
-			return {
+			var obj = {
 				...appProps,
-				initialReduxState: reduxStore.getState(),
+				initialReduxState: store.getState(),
 			};
+			return obj;
 		}
-		reduxStore: Store; //声明属性类型
+		reduxStore: Store; //缓存store对象
 		constructor(props) {
 			super(props);
-			// 根据state创建store对象
+			// Client: 根据props.state创建store对象
 			this.reduxStore = getOrCreateStore(props.initialReduxState);
 		}
 		render() {

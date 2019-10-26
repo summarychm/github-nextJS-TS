@@ -1,20 +1,14 @@
 import { CSSProperties, ReactChild } from "react";
 import { Dropdown, Layout, Icon, Menu, Avatar, Input, Tooltip } from "antd";
 import Link from "next/link";
+import getConfig from "next/config";
 
-import Container from "./Components/Container";
+import Container from "./Components/Container"; //HOC,减少DOM层级
 
 const { Header, Content, Footer } = Layout;
+const { publicRuntimeConfig } = getConfig();
 
-interface iStyle {
-	githubIcon: CSSProperties;
-	footer: CSSProperties;
-}
-interface iProps {
-	children: ReactChild;
-}
-
-const styleObj: iStyle = {
+const styleObj: any = {
 	githubIcon: {
 		color: "white",
 		fontSize: 40,
@@ -24,7 +18,9 @@ const styleObj: iStyle = {
 	},
 	footer: { textAlign: "center" },
 };
-
+interface iProps {
+	children: ReactChild;
+}
 function MyLayout(props: iProps) {
 	const { children } = props;
 	return (
@@ -44,7 +40,7 @@ function MyLayout(props: iProps) {
 					<div className="header-right">
 						<div className="user">
 							<Tooltip title="点击进行登录">
-								<a href={`/prepare-auth`}>
+								<a href={`${publicRuntimeConfig.OAUTH_URL}`}>
 									<Avatar size={40} icon="user" />
 								</a>
 							</Tooltip>

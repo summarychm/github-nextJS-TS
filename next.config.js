@@ -3,6 +3,9 @@ const webpack = require('webpack')
 const withCss = require('@zeit/next-css')
 
 const configUrls = require("./configUrls");
+const githubUrls = configUrls.github;
+var str = `${githubUrls.oauth_base_url}?client_id=${githubUrls.client_id}&scope=${githubUrls.scope}`
+
 const configs = {
   distDir: 'dest',
   // generateEtags: true,// 是否给每个路由生成Etag
@@ -40,8 +43,9 @@ const configs = {
   // },
   // 在服务端渲染和客户端渲染都可获取的配置
   publicRuntimeConfig: {
-    OAUTH_BASE_URL: configUrls.github.oauth_url,
-    OAUTH_URL: `${configUrls.github.oauth_url}?client_id=${configUrls.github.client_id}&scope=${configUrls.github.scope}`,
+    OAUTH_BASE_URL: githubUrls.oauth_base_url,
+    OAUTH_URL: `${githubUrls.oauth_base_url}?client_id=${githubUrls.client_id}&scope=${githubUrls.scope}`,
+    //
   },
 }
 
