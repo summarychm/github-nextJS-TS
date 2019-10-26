@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es6",
     "module": "esnext",
     "jsx": "preserve",
     "lib": [
       "dom",
       "es2017"
     ],
-    "baseUrl": "./",
+    "baseUrl": ".",
     "moduleResolution": "node",
     "strict": false,
     "allowJs": true,
