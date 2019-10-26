@@ -34,9 +34,16 @@ const withReduxStore = (WrappedComponent) => {
 		static async getInitialProps(appContext) {
 			// 设置server端redux的初始值,如token信息
 			let initialValue = {};
-			const reduxStore = getOrCreateStore(initialValue); // 获取最新的store
-			appContext.ctx.reduxStore = reduxStore;
+			if (isServer) {
+				const session = appContext.ctx.res.session;
+				if (session) initialValue = session.userInfo;
+			}
+
+			const reduxStore = getOrCreateStore(initialValue); // 创建/获取store
+			appContext.reduxStore = reduxStore; //挂载到ctx
+
 			let appProps = {};
+			// 调用子组件的 getInitialProps进行初始化
 			if (typeof WrappedComponent.getInitialProps === "function") {
 				appProps = await WrappedComponent.getInitialProps(appContext);
 			}

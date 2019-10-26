@@ -22,4 +22,5 @@
 [x] 引入了 eslint 进行校验,并加入 react-hooks 的校验规则  
 [x] 将公共样式抽离到单独的 css 文件中  
 [x] 创建 Container 组件,根据 Component(ReactElement/string)属性动态创建组件并将 children 作为自身属性渲染,减少 dom 层次,提升灵活性  
-[x] 将 redux-dev-tools 的引入方式改为使用 redux-devtools-extension 这个 package,因为 next.js+ts 环境下 window is not defined
+[x] 将 redux-dev-tools 的引入方式改为使用 redux-devtools-extension 这个 package,因为 next.js+ts 环境下 window is not defined  
+[x] :bug:在 Request 时将 session 写入 redux,并发下给 Client 端,Client 基于该 state 创建 redux
