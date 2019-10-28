@@ -1,9 +1,14 @@
-import { CSSProperties, ReactChild } from "react";
+import { CSSProperties, ReactChild, ReactComponentElement, ReactElement } from "react";
 import { Dropdown, Layout, Icon, Menu, Avatar, Input, Tooltip } from "antd";
 import Link from "next/link";
 import getConfig from "next/config";
+import { connect } from "react-redux";
+
+import UserInfo from "$components/userInfo";
 
 import Container from "./Components/Container"; //HOC,减少DOM层级
+import userAction from "../store/actions/user";
+import userReducer from "store/reducers/user";
 
 const { Header, Content, Footer } = Layout;
 const { publicRuntimeConfig } = getConfig();
@@ -20,6 +25,8 @@ const styleObj: any = {
 };
 interface iProps {
 	children: ReactChild;
+	user: any;
+	logOut?: () => void;
 }
 function MyLayout(props: iProps) {
 	const { children } = props;
@@ -38,13 +45,7 @@ function MyLayout(props: iProps) {
 						</div>
 					</div>
 					<div className="header-right">
-						<div className="user">
-							<Tooltip title="点击进行登录">
-								<a href={`${publicRuntimeConfig.OAUTH_URL}`}>
-									<Avatar size={40} icon="user" />
-								</a>
-							</Tooltip>
-						</div>
+						<UserInfo user={props.user} logout={props.logOut} />
 					</div>
 				</Container>
 			</Header>
@@ -66,4 +67,11 @@ function MyLayout(props: iProps) {
 		</Layout>
 	);
 }
-export default MyLayout;
+
+const mapStateToProps = function(state) {
+	return { user: state.user };
+};
+export default connect(
+	mapStateToProps,
+	userAction,
+)(MyLayout);

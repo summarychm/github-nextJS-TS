@@ -4,7 +4,6 @@ import thunk from "redux-thunk";
 
 import reducers from "./reducers";
 
-// let composeEnhancer = window && window["__REDUX_DEVTOOLS_EXTENSION_COMPOSE__"] ? window["__REDUX_DEVTOOLS_EXTENSION_COMPOSE__"] : compose;
 let enhancer = applyMiddleware(thunk);
 let enhancers = composeWithDevTools(enhancer);
 

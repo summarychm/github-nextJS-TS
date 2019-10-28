@@ -1,6 +1,6 @@
 import axios from "axios";
 import Router, { IRouterContext } from "koa-router";
-import configs from "../configUrls";
+import configs from "../../configUrls";
 
 const { request_token_url, client_id, client_secret, user_base_url } = configs.github;
 const router = new Router();
@@ -12,9 +12,9 @@ interface iCtx {
 		[props: string]: any;
 	};
 }
-router.get("/api/user/info", async (ctx: IRouterContext & iCtx) => {
+// 获取用户信息
+router.get("/user/info", async (ctx: IRouterContext & iCtx) => {
 	const user = ctx.session.userInfo;
-	// const user = { name: "张三", age: 20, city: { v1: "北京", v2: "朝阳" } };
 	if (!user) {
 		ctx.status = 401;
 		ctx.body = "Need Login";
@@ -23,7 +23,7 @@ router.get("/api/user/info", async (ctx: IRouterContext & iCtx) => {
 		ctx.set("Content-Type", "application/json");
 	}
 });
-
+// oauth回调处理,根据code+client_id+lient_secret计算token
 router.get("/auth", async (ctx: IRouterContext & iCtx) => {
 	try {
 		// ctx.body = "auth 验证信息";
@@ -63,5 +63,10 @@ router.get("/auth", async (ctx: IRouterContext & iCtx) => {
 		ctx.body = `request token failed ${err}`;
 	}
 });
-
+// 退出登录接口
+router.post("/logout", async (ctx: IRouterContext & iCtx) => {
+	console.log("logout");
+	ctx.session = null;
+	ctx.body = `logout seccess`;
+});
 export default router;
