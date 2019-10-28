@@ -1,12 +1,13 @@
-import { ReactElement, useCallback } from "react";
-import { Dropdown, Avatar, Tooltip, Menu } from "antd";
+import { ReactElement, useCallback, useState } from "react";
+import { Avatar, Dropdown, Tooltip, Menu, Spin } from "antd";
 import getConfig from "next/config";
 
 const { publicRuntimeConfig } = getConfig();
 
 export default function userInfoComponent(props): ReactElement {
 	const { user, logout } = props;
-	// console.log("=>: props", props);
+	let [logining, setLogining] = useState(false);
+
 	const overlayDropItem = (
 		<Menu>
 			<Menu.Item>
@@ -27,9 +28,11 @@ export default function userInfoComponent(props): ReactElement {
 				</Dropdown>
 			) : (
 				<Tooltip title="点击进行登录">
-					<a href={publicRuntimeConfig.OAUTH_URL}>
-						<Avatar size={40} icon="user" />
-					</a>
+					<Spin spinning={logining}>
+						<a href={publicRuntimeConfig.OAUTH_URL} onClick={() => setLogining(!logining)}>
+							<Avatar size={40} icon="user" />
+						</a>
+					</Spin>
 				</Tooltip>
 			)}
 		</div>
