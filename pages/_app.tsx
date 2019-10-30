@@ -20,6 +20,9 @@ class MyApp extends App<iProps> {
 	};
 	// 每次路由变化都会触发该方法
 	static async getInitialProps(ctx) {
+		console.log('============ "页面初始化" begin ====================');
+		console.log(" _app 页面初始化");
+		console.log('============ "页面初始化" end ======================');
 		const { Component } = ctx; // Component:当前要渲染的页面组件
 		let pageProps = {};
 		//调用要渲染组件的 getInitialProps

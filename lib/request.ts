@@ -4,7 +4,7 @@ import { github } from "../configUrls";
 
 const isServer = typeof window === "undefined";
 
-export async function request({ method, url, data }, req: any) {
+export async function request({ method, url, data }, req?: any) {
 	if (!url) throw Error("url must provide");
 	if (isServer) {
 		const { githubAuth } = req.session;

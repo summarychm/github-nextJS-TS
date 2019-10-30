@@ -6,7 +6,9 @@ declare module "react" {
 		global?: boolean;
 	}
 }
-declare interface Window {
-	__REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: any; // redux-dev-tools
-	store?: any; // 方便调试
+declare global {
+	interface Window {
+		__REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: any; // redux-dev-tools
+		store?: any; // 方便调试
+	}
 }
