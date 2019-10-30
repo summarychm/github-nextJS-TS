@@ -16,9 +16,8 @@ function getOrCreateStore(initialState?): Store {
 	// Client端共用同一store并使用全局变量缓存
 	else {
 		console.log("client端运行!");
-		let localReduxStore = window[__NEXT_REDUX_STORE__];
-		if (!localReduxStore) localReduxStore = createRootStore(initialState);
-		return localReduxStore;
+		if (!window[__NEXT_REDUX_STORE__]) window[__NEXT_REDUX_STORE__] = createRootStore(initialState);
+		return window[__NEXT_REDUX_STORE__];
 	}
 }
 

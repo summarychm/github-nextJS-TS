@@ -37,7 +37,9 @@ function MyLayout(props: iProps) {
 					<div className="header-left">
 						<div className="logo">
 							<Link href="/">
-								<Icon type="github" style={styleObj.githubIcon} />
+								<span>
+									<Icon type="github" style={styleObj.githubIcon} />
+								</span>
 							</Link>
 						</div>
 						<div>

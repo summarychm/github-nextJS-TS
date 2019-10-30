@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Tabs, Button, Icon } from "antd";
 import getConfig from "next/config";
-import Router, { withRouter } from "next/router";
+import { withRouter } from "next/router";
 
 import { connect } from "react-redux";
 
@@ -10,6 +10,7 @@ import Repo from "$components/repo";
 const isServer = typeof window === "undefined";
 const { publicRuntimeConfig } = getConfig();
 
+// 用于缓存用户项目列表
 let cachedUserRepos, cachedUserStartRepos;
 
 function Index(props) {
@@ -20,19 +21,19 @@ function Index(props) {
 	console.log("============ props end ======================");
 	useEffect(() => {
 		if (!isServer) {
-			console.log('============ "开始缓存" begin ====================');
-			console.log("开始缓存");
-			console.log('============ "开始缓存" end ======================');
 			cachedUserRepos = userRepos;
 			cachedUserStartRepos = userStartRepos;
 			setTimeout(() => {
+				console.log("清除列表缓存数据");
 				cachedUserRepos = null;
 				cachedUserStartRepos = null;
-			}, 1000 * 60 * 10);
+			}, 1000 * 3);
 		}
 	}, [userRepos, userStartRepos]);
 	const tabKey = router.query.key || "1";
-	const handleTabChange = (activeKey) => Router.push(`/?key=${activeKey}`);
+	const handleTabChange = (activeKey) => {
+		router.push(`/?key=${activeKey}`);
+	};
 
 	if (!user || !user.id) {
 		return (
@@ -68,13 +69,11 @@ function Index(props) {
 			</div>
 			<Tabs activeKey={tabKey} onChange={handleTabChange} animated={false}>
 				<Tabs.TabPane tab="你的仓库" key="1">
-					<div>你的仓库</div>
 					{userRepos.map((repo) => (
 						<Repo key={repo.id} repo={repo} />
 					))}
 				</Tabs.TabPane>
 				<Tabs.TabPane tab="你关注的仓库" key="2">
-					<div>你关注的仓库</div>
 					{userStartRepos.map((repo) => (
 						<Repo key={repo.id} repo={repo} />
 					))}
@@ -113,6 +112,9 @@ function Index(props) {
 				.user-repos {
 					flex-grow: 1;
 				}
+				.email {
+					width: 210px;
+				}
 			`}</style>
 		</div>
 	);
@@ -133,6 +135,7 @@ Index.getInitialProps = async function({ ctx, reduxStore }) {
 		}
 	}
 	// 用户个人的项目
+
 	const userRepos = await request({ method: "GET", url: "/user/repos", data: null }, ctx.req);
 	// 用户Start的项目
 	const userStartRepos = await request({ method: "GET", url: "/user/starred", data: null }, ctx.req);
@@ -141,9 +144,6 @@ Index.getInitialProps = async function({ ctx, reduxStore }) {
 		userRepos: userRepos.data,
 		userStartRepos: userStartRepos.data,
 	};
-	// console.log("============ resultData begin ====================");
-	// console.log(resultData);
-	// console.log("============ resultData end ======================");
 	return resultData;
 };
 

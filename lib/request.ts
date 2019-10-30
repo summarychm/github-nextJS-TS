@@ -14,6 +14,7 @@ export async function request({ method, url, data }, req?: any) {
 		};
 		return await requestGithub(method, url, data, headers);
 	} else {
+		if (!url.match(/api/i)) url = "/github" + url; //非api接口都认为是非内部接口
 		return await axios({ method, url, data });
 	}
 }
