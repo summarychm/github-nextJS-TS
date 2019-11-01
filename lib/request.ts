@@ -1,10 +1,10 @@
-import axios, { Method } from "axios";
+import axios, { Method, AxiosRequestConfig } from "axios";
 
 import { github } from "../configUrls";
 
 const isServer = typeof window === "undefined";
 
-export async function request({ method, url, data }, req?: any) {
+export async function request({ method, url, data }: AxiosRequestConfig, req?: any) {
 	if (!url) throw Error("url must provide");
 	if (isServer) {
 		const { githubAuth } = req.session;

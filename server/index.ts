@@ -43,8 +43,9 @@ nextApp.prepare().then(() => {
 	koa.use(routers.allowedMethods());
 
 	koa.use(async (ctx, next) => {
-		const { path, method, url, request } = ctx;
+		let { path, method, url, request } = ctx;
 		if (path.startsWith("/github/")) {
+			url = url.replace("/github/", "/");
 			console.log("当前接口非内部接口,地址为:", url);
 			const session = ctx.session;
 			const githubAuth = session && session.githubAuth;
@@ -53,7 +54,7 @@ nextApp.prepare().then(() => {
 				headers["Authorization"] = `${githubAuth.token_type} ${githubAuth.access_token}`;
 			}
 
-			const result = await requestGithub(method as Method, url.replace("/github/", "/"), (ctx.request as iRequest).body || {}, headers);
+			const result = await requestGithub(method as Method, url, (ctx.request as iRequest).body || {}, headers);
 
 			ctx.status = result.status;
 			ctx.body = result.data;

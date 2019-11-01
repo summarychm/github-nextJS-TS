@@ -43,6 +43,7 @@ const configs = {
 	// },
 	// 在服务端渲染和客户端渲染都可获取的配置
 	publicRuntimeConfig: {
+		per_count: 30,
 		OAUTH_BASE_URL: githubUrls.oauth_base_url,
 		OAUTH_URL: `${githubUrls.oauth_base_url}?client_id=${githubUrls.client_id}&scope=${githubUrls.scope}`,
 		//

@@ -47,13 +47,13 @@ function MyLayout(props: iProps) {
 			<Header>
 				<Container Component={<div className="header-inner" />}>
 					<div className="header-left">
-						<div className="logo">
+						<>
 							<Link href="/">
-								<span>
+								<a>
 									<Icon type="github" style={styleObj.githubIcon} />
-								</span>
+								</a>
 							</Link>
-						</div>
+						</>
 						<div>
 							<Input.Search placeholder="搜索仓库" value={search} onSearch={handleOnSearch} onChange={handleOnChange} />
 						</div>
