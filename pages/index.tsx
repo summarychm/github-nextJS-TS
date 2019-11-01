@@ -16,9 +16,9 @@ let cachedUserRepos, cachedUserStartRepos;
 function Index(props) {
 	//getInitialProps,redux,router,dispatch.
 	const { user, router, userRepos, userStartRepos } = props;
-	console.log("============ index props begin ====================");
-	console.log("index 页面初始化", Object.keys(props));
-	console.log("============ index props end ======================");
+	// console.log("============ index props begin ====================");
+	// console.log("pages index", Object.keys(props));
+	// console.log("============ index props end ======================");
 	useEffect(() => {
 		if (!isServer) {
 			cachedUserRepos = userRepos;
