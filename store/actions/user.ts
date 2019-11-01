@@ -4,7 +4,7 @@ import { Dispatch } from "redux";
 import { message } from "antd";
 
 import { eUserType } from "../action-types";
-import configUrls from "../../configUrls";
+import configUrls from "@/configUrls";
 
 export default {
 	logOut() {

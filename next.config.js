@@ -26,6 +26,7 @@ const configs = {
 	webpack(config, options) {
 		config.resolve.alias["$components"] = path.join(__dirname, "components");
 		config.resolve.alias["$lib"] = path.join(__dirname, "lib");
+		config.resolve.alias["@"] = path.join(__dirname, "./");
 		return config;
 	},
 	// // 修改webpackDevMiddleware配置
