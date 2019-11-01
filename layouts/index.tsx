@@ -1,8 +1,9 @@
-import { CSSProperties, ReactChild, ReactComponentElement, ReactElement } from "react";
-import { Dropdown, Layout, Icon, Menu, Avatar, Input, Tooltip } from "antd";
+import { ReactChild, useCallback, useState } from "react";
+import { Dropdown, Layout, Icon, Menu, Avatar, Input, Tooltip, message } from "antd";
+import { connect } from "react-redux";
 import Link from "next/link";
 import getConfig from "next/config";
-import { connect } from "react-redux";
+import { withRouter, Router } from "next/router";
 
 import UserInfo from "$components/userInfo";
 
@@ -26,10 +27,21 @@ const styleObj: any = {
 interface iProps {
 	children: ReactChild;
 	user: any;
+	router: Router;
 	logOut?: () => void;
 }
 function MyLayout(props: iProps) {
-	const { children } = props;
+	const { children, router } = props;
+	const urlQuery = router.query && router.query.query;
+
+	const [search, setSearch] = useState(urlQuery || "");
+
+	const handleOnSearch = useCallback(() => {
+		if (!search) return message.error("搜索内容不能为空");
+		router.push(`/search?query=${search}`);
+	}, [search]);
+	const handleOnChange = useCallback((e) => setSearch(e.target.value || ""), [setSearch]);
+
 	return (
 		<Layout>
 			<Header>
@@ -43,7 +55,7 @@ function MyLayout(props: iProps) {
 							</Link>
 						</div>
 						<div>
-							<Input.Search placeholder="搜索仓库" />
+							<Input.Search placeholder="搜索仓库" value={search} onSearch={handleOnSearch} onChange={handleOnChange} />
 						</div>
 					</div>
 					<div className="header-right">
@@ -76,4 +88,4 @@ const mapStateToProps = function(state) {
 export default connect(
 	mapStateToProps,
 	userAction,
-)(MyLayout);
+)(withRouter(MyLayout));
