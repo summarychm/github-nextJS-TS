@@ -12,28 +12,31 @@ const { publicRuntimeConfig } = getConfig();
 
 // 用于缓存用户项目列表
 let cachedUserRepos, cachedUserStartRepos;
-
-function Index(props) {
+interface iProps {
+	user: {
+		[param: string]: any;
+	};
+	router: Router;
+	userRepos: any[];
+	userStartRepos: any[];
+}
+function Index({ user, router, userRepos, userStartRepos }: iProps) {
 	//getInitialProps,redux,router,dispatch.
-	const { user, router, userRepos, userStartRepos } = props;
-	// console.log("============ index props begin ====================");
-	// console.log("pages index", Object.keys(props));
-	// console.log("============ index props end ======================");
+	const tabKey = (router.query.key as string) || "1";
+
+	// repos缓存 effect
 	useEffect(() => {
 		if (!isServer) {
 			cachedUserRepos = userRepos;
 			cachedUserStartRepos = userStartRepos;
 			setTimeout(() => {
-				console.log("清除列表缓存数据");
 				cachedUserRepos = null;
 				cachedUserStartRepos = null;
-			}, 1000 * 3);
+			}, 1000 * 60 * 10);
 		}
 	}, [userRepos, userStartRepos]);
-	const tabKey = router.query.key || "1";
-	const handleTabChange = (activeKey) => {
-		router.push(`/?key=${activeKey}`);
-	};
+
+	const handleTabChange = (activeKey) => router.push(`/?key=${activeKey}`);
 
 	if (!user || !user.id) {
 		return (
@@ -135,7 +138,6 @@ Index.getInitialProps = async function({ ctx, reduxStore }) {
 		}
 	}
 	// 用户个人的项目
-
 	const userRepos = await request({ method: "GET", url: "/user/repos", data: null }, ctx.req);
 	// 用户Start的项目
 	const userStartRepos = await request({ method: "GET", url: "/user/starred", data: null }, ctx.req);
