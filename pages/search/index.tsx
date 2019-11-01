@@ -2,10 +2,11 @@ import { Row, Col, Pagination, List } from "antd";
 import Link from "next/link";
 import { withRouter, Router } from "next/router";
 import getConfig from "next/config";
-import { request } from "../../lib/request";
-import { noop } from "../../lib/utils";
+
+import { request } from "$lib/request";
+import { noop } from "$lib/utils";
+import { getQueryString } from "$lib/getQueryString";
 import { FilterLink } from "./FilterLink";
-import { getQueryString } from "../../lib/getQueryString";
 import Repo from "$components/repo";
 
 const LANGUAGES = ["JavaScript", "HTML", "CSS", "TypeScript", "Java", "Rust"];

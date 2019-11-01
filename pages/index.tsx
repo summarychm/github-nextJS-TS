@@ -4,7 +4,7 @@ import getConfig from "next/config";
 import { withRouter, Router } from "next/router";
 import { Tabs, Button, Icon } from "antd";
 
-import { request } from "../lib/request";
+import { request } from "$lib/request";
 import Repo from "$components/repo";
 
 const isServer = typeof window === "undefined";

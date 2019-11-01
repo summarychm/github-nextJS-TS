@@ -7,7 +7,7 @@ import "antd/dist/antd.css";
 import "../public/style/global.css";
 
 import Layout from "../layouts";
-import { withReduxStore } from "../lib/with-redux-store";
+import { withReduxStore } from "$lib/with-redux-store";
 import { withLoading } from "$components/with-loading";
 
 interface iProps {
