@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
-import { Tabs, Button, Icon } from "antd";
-import getConfig from "next/config";
-import { withRouter } from "next/router";
-
 import { connect } from "react-redux";
+import getConfig from "next/config";
+import { withRouter, Router } from "next/router";
+import { Tabs, Button, Icon } from "antd";
 
 import { request } from "../lib/request";
 import Repo from "$components/repo";
+
 const isServer = typeof window === "undefined";
 const { publicRuntimeConfig } = getConfig();
 
@@ -16,9 +16,9 @@ let cachedUserRepos, cachedUserStartRepos;
 function Index(props) {
 	//getInitialProps,redux,router,dispatch.
 	const { user, router, userRepos, userStartRepos } = props;
-	console.log("============ props begin ====================");
+	console.log("============ index props begin ====================");
 	console.log("index 页面初始化", Object.keys(props));
-	console.log("============ props end ======================");
+	console.log("============ index props end ======================");
 	useEffect(() => {
 		if (!isServer) {
 			cachedUserRepos = userRepos;
