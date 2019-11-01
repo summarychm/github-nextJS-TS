@@ -8,7 +8,7 @@ const __NEXT_REDUX_STORE__ = "__NEXT_REDUX_STORE__";
 
 // 获取/创建store实例(Server&Client端通用)
 function getOrCreateStore(initialState?): Store {
-	// Server端直每次创建新的store,否则会request间共享store
+	// Server端直每次创建新的store,否则会request间共享store,导致server/client状态不一致.
 	if (isServer) {
 		console.log("Server端运行!");
 		return createRootStore(initialState);
@@ -24,13 +24,15 @@ function getOrCreateStore(initialState?): Store {
 interface iProps {
 	initialReduxState: Object;
 }
-// 为next.js组件增加redux功能
-const withReduxStore = (WrappedComponent) => {
+/**
+ * 为组件增加redux功能(HOC)
+ * @param WrappedComponent 要实现redux的Component
+ */
+export const withReduxStore = (WrappedComponent) => {
 	return class WithComponent extends React.Component<iProps> {
 		static async getInitialProps(appContext) {
-			// 设置server端redux的初始值,如token信息
-			let initialValue = {},
-				appProps = {};
+			let initialValue = {}, // 设置server端redux的初始值,如token信息
+				appProps = {}; // 其他component所需的props
 			if (isServer) {
 				const session = appContext.ctx.req.session; //读取用户信息写入redux
 				if (session) initialValue = { user: session.userInfo };
@@ -43,13 +45,13 @@ const withReduxStore = (WrappedComponent) => {
 			if (typeof WrappedComponent.getInitialProps === "function") {
 				appProps = await WrappedComponent.getInitialProps(appContext);
 			}
-			var obj = {
+			return {
 				...appProps,
 				initialReduxState: store.getState(),
 			};
-			return obj;
 		}
 		reduxStore: Store; //缓存store对象
+
 		constructor(props) {
 			super(props);
 			// Client: 根据props.state创建store对象
@@ -61,4 +63,3 @@ const withReduxStore = (WrappedComponent) => {
 		}
 	};
 };
-export default withReduxStore;
