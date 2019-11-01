@@ -23,7 +23,7 @@ export const withLoading = (WarperComponent) => {
 				Router.events.off("routeChangeError", () => changeLoading(false));
 			};
 		});
-		return <>{isLoading ? <Spin style={{ width: "100%", padding: "30%", textAlign: "center", zIndex: 10001 }} /> : <WarperComponent {...props} />}</>;
+		return <>{isLoading ? <Spin style={{ width: "100%", padding: "20%", textAlign: "center", zIndex: 10001 }} /> : <WarperComponent {...props} />}</>;
 	};
 	WithDetail.getInitialProps! = async (context) => {
 		let pageData = {};
@@ -32,7 +32,3 @@ export const withLoading = (WarperComponent) => {
 	};
 	return WithDetail;
 };
-
-/**
- 
- */

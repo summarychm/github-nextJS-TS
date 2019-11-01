@@ -48,15 +48,8 @@ interface iProps {
 }
 
 function Search({ router, repos }: iProps) {
-	var c = repos;
-	console.log('============ "Search router" begin ====================');
-	// console.log(router);
-	console.log(repos.total_count);
-	console.log('============ "Search router" end ======================');
-
 	const { ...querys } = router.query;
 	const { lang, sort, order, page } = router.query;
-	// return <div>111</div>;
 	return (
 		<div className="root">
 			<Row gutter={20}>
@@ -115,6 +108,8 @@ function Search({ router, repos }: iProps) {
 			<style jsx>{`
 				.root {
 					padding: 20px 0;
+					max-width: 1200px;
+					margin: 0 auto;
 				}
 				.list-header {
 					font-weight: 800;

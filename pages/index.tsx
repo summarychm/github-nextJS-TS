@@ -87,6 +87,8 @@ function Index({ user, router, userRepos, userStartRepos }: iProps) {
 					display: flex;
 					align-items: flex-start;
 					padding: 20px 0;
+					max-width: 1200px;
+					margin: 0 auto;
 				}
 				.user-info {
 					width: 200px;
