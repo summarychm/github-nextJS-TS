@@ -4,7 +4,7 @@ import getConfig from "next/config";
 
 const { publicRuntimeConfig } = getConfig();
 
-export default function userInfoComponent(props): ReactElement {
+export function UserInfo(props): ReactElement {
 	const { user, logout } = props;
 
 	const overlayDropItem = (

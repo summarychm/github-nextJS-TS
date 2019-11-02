@@ -18,6 +18,11 @@ export default memo(function MarkDownRenderer({ content, isBase64 }: iPops) {
 	return (
 		<div className="markdown-body">
 			<div dangerouslySetInnerHTML={{ __html: html }} />
+			<style jsx>{`
+				img {
+					max-width: 100%;
+				}
+			`}</style>
 		</div>
 	);
 });

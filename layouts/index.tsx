@@ -5,7 +5,7 @@ import Link from "next/link";
 import getConfig from "next/config";
 import { withRouter, Router } from "next/router";
 
-import UserInfo from "$components/userInfo";
+import { UserInfo } from "$components/userInfo";
 
 import Container from "./Components/Container"; //HOC,减少DOM层级
 import userAction from "../store/actions/user";

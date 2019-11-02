@@ -7,7 +7,7 @@ import { request } from "$lib/request";
 import { noop } from "$lib/utils";
 import { getQueryString } from "$lib/getQueryString";
 import { FilterLink } from "./FilterLink";
-import Repo from "$components/repo";
+import { Repo } from "$components/repo";
 
 const LANGUAGES = ["JavaScript", "HTML", "CSS", "TypeScript", "Java", "Rust"];
 const SORT_TYPES = [

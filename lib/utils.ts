@@ -6,6 +6,10 @@ export function getLastUpdated(time) {
 }
 export const noop = () => {};
 
+/**
+ * 解码base64的内容
+ * @param str 要解码的内容
+ */
 export function b64ToUtf8(str) {
 	return decodeURIComponent(escape(atob(str)));
 }

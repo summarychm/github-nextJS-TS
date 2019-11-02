@@ -1,9 +1,9 @@
 import { ReactElement } from "react";
 import { NextPageContext, NextComponentType } from "next";
-
+import dynamic from "next/dynamic";
 import { request } from "$lib/request";
-import MarkDownRenderer from "$components/MarkDownRenderer";
-import withRepoBasic from "$components/with-repo-basic";
+import { withRepoBasic } from "$components/with-repo-basic";
+const MarkDownRenderer = dynamic(() => import("$components/MarkDownRenderer"));
 
 const isServer = typeof window === "undefined";
 interface iDetail {
@@ -12,12 +12,7 @@ interface iDetail {
 }
 //详情页
 let Detail: iDetail = function(props) {
-	const { readme } = props;
-	// console.log("============ props begin ====================");
-	// console.log(isServer);
-	// console.log("============ props end ======================");
-	// return <></>;
-	return <MarkDownRenderer content={readme.content} isBase64={true} />;
+	return <MarkDownRenderer content={props.readme.content} isBase64={true} />;
 };
 Detail.getInitialProps = async function(context: NextPageContext) {
 	let readme = {};

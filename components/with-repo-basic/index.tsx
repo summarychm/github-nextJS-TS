@@ -5,7 +5,7 @@ import { withRouter } from "next/router";
 
 import { request } from "$lib/request";
 
-import Repo from "$components/repo";
+import { Repo } from "$components/repo";
 import { DetailTabs } from "$components/DetailTabs";
 
 interface iContext {
@@ -17,7 +17,7 @@ interface iProps {
 	router: Router;
 	[prop: string]: any;
 }
-export default function(Wrapped: NextComponentType, type: string) {
+export function withRepoBasic(Wrapped: NextComponentType, type: string) {
 	function WithRepoBasic(props: iProps) {
 		const { repoBasic, router, ...rest } = props;
 		let tabType = type;
@@ -32,7 +32,9 @@ export default function(Wrapped: NextComponentType, type: string) {
 				</div>
 				<style jsx>{`
 					.root {
-						padding-top: 20px;
+						padding: 20px 0;
+						max-width: 1200px;
+						margin: 0 auto;
 					}
 					.repo-basic {
 						padding: 20px;
