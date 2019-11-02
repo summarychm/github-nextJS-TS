@@ -10,9 +10,7 @@ export default function userInfoComponent(props): ReactElement {
 	const overlayDropItem = (
 		<Menu>
 			<Menu.Item>
-				<a href="javascript:void(0);" onClick={logout}>
-					登出
-				</a>
+				<a onClick={logout}>登出</a>
 			</Menu.Item>
 		</Menu>
 	);
