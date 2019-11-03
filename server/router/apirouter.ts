@@ -71,7 +71,7 @@ router.post("/logout", async (ctx: IRouterContext & iCtx) => {
 });
 router.all("/github", async (ctx: IRouterContext & iCtx) => {
 	console.log("进入到github");
-	var c = ctx;
+	let c = ctx;
 });
 
 export default router;

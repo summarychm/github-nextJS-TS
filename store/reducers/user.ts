@@ -1,11 +1,10 @@
 const initialState = {};
-import { eUserType } from "../action-types";
+import { eUserType } from '../action-types';
 export default function userReducer(state = initialState, action) {
-	switch (action.type) {
-		case eUserType.LOGOUT:
-			return {};
-			break;
-		default:
-			return state;
-	}
+    switch (action.type) {
+        case eUserType.LOGOUT:
+            return {};
+        default:
+            return state;
+    }
 }
