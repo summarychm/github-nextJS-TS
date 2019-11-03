@@ -4,7 +4,12 @@ module.exports = {
 		commonjs: true,
 		es6: true,
 	},
-	extends: ["eslint:recommended", "plugin:@typescript-eslint/eslint-recommended"],
+	extends: [
+		'alloy',
+		'alloy/typescript',
+		// "eslint:recommended",
+		// "plugin:@typescript-eslint/eslint-recommended"
+	],
 	globals: {
 		Atomics: "readonly",
 		SharedArrayBuffer: "readonly",
@@ -25,5 +30,6 @@ module.exports = {
 		"require-atomic-updates": 0,
 		"no-unused-vars": 0,
 		"no-undef": 0,
+		"no-var": 2,
 	},
 };

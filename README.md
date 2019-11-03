@@ -10,7 +10,8 @@
     npm install -S ioredis jest axios moment markdown-it atob github-markdown-css
     npm install -S koa koa-router koa-session koa-body
 
-    npm install -D cross-env nodemon redux-devtools-extension eslint eslint-plugin-react eslint-plugin-react-hooks
+    npm install -D cross-env nodemon redux-devtools-extension
+    npm install -D eslint prettier typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-config-alloy eslint-plugin-react eslint-plugin-react-hooks
 
 ### TODO List
 
