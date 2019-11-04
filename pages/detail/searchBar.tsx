@@ -4,25 +4,24 @@ import { useState, useCallback } from 'react';
 import { SearchUser } from './searchuser';
 const Option = Select.Option;
 
-export function SearchBar({ labels }) {
+export function SearchBar({ labels, fetching, onSetFetch }) {
     const [creator, setCreator] = useState();
     const [state, setIssuesState] = useState();
     const [label, setLabelState] = useState();
-    const [fetching, setFetchState] = useState(false);
 
     const handleCreatorChange = useCallback((value) => setCreator(value), []);
     const handleStateChange = useCallback((value) => setIssuesState(value), []);
     const handleLabelChange = useCallback((value) => setLabelState(value), []);
-    const handleFetchChange = useCallback((value) => setFetchState(value), []);
-
-    const handleSearch = () => {};
+    const handleSearch = () => {
+        onSetFetch(true);
+    };
     return (
         <div className="search">
             <SearchUser
                 onChange={handleCreatorChange}
                 value={creator}
                 fetching={fetching}
-                onSetFetch={handleFetchChange}
+                onSetFetch={onSetFetch}
             />
             <Select
                 placeholder="状态"

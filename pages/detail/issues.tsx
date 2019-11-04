@@ -1,6 +1,6 @@
 import { ReactElement, useState, useCallback } from 'react';
 import { NextPageContext } from 'next';
-import { Button, Spin, Select } from 'antd';
+import { Spin } from 'antd';
 
 import { withRepoBasic } from '$components/with-repo-basic';
 import { request } from '$lib/request';
@@ -8,7 +8,7 @@ import { IssueItem } from './IssueItem';
 import { SearchBar } from './searchBar';
 
 const isServer = typeof window === 'undefined';
-const Option = Select.Option;
+
 interface IDetail {
     getInitialProps?: (content: NextPageContext) => any;
     (props: any): ReactElement;
@@ -21,19 +21,12 @@ const Issues: IDetail = (props) => {
     console.log('============ props end ======================');
     const [issues, setIssues] = useState(initialIssues);
     const [fetching, setFetching] = useState(false); // 是否加载中
-    // 筛选条件
-    const [label, setLabel] = useState([]);
-    const [state, setState] = useState();
 
-    const handleLabelChange = useCallback((value) => setLabel(value), []);
-    const handleStateChange = useCallback((value) => setState(value), []);
-
-    const handleSearch = () => {};
-
+    const handleSetFetch = (value: boolean) => setFetching(value);
     return (
         <div className="root">
             {/* search-bar */}
-            <SearchBar labels={labels} />
+            <SearchBar labels={labels} fetching={fetching} onSetFetch={handleSetFetch} />
             {/* Issues */}
             {fetching ? (
                 <div className="loading">
