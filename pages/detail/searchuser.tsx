@@ -1,20 +1,17 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { Spin, Select } from 'antd';
+
 import { request } from '$lib/request';
+import { useDebounceCallback } from '$lib/useDebounceCallback';
 
 const Option = Select.Option;
 export function SearchUser({ value, onChange, fetching, onSetFetch }) {
     const [options, setOptions] = useState([]);
-
-    const fetchUser = useCallback((value) => {
+    const fetchUser = useDebounceCallback((value) => {
         value = value.trim();
         if (!value) return;
         onSetFetch(true);
         console.log('fetching user', value);
-        // TODO 加入debounce
-        // TODO 改为读取Issuess涉及的用户
-        // TODO 将用户列表添加用户头像显示
-
         request({
             url: `/search/users?q=${value.trim()}`
         })
@@ -22,15 +19,15 @@ export function SearchUser({ value, onChange, fetching, onSetFetch }) {
                 console.log('user', res);
                 return res.data.items.map((user) => ({
                     text: user.login,
-                    value: user.login
+                    value: user.login,
+                    avatar: user.avatar_url
                 }));
             })
             .then((data) => {
                 onSetFetch(false);
                 setOptions(data);
             });
-    }, []);
-
+    }, 500);
     const handleChange = (value) => {
         setOptions([]);
         onSetFetch(false);
@@ -50,7 +47,14 @@ export function SearchUser({ value, onChange, fetching, onSetFetch }) {
         >
             {options.map((op) => (
                 <Option value={op.value} key={op.value}>
-                    {op.text}
+                    <span>
+                        <img
+                            style={{ width: '50px', marginRight: '5px' }}
+                            src={op.avatar}
+                            alt={op.text}
+                        />
+                        {op.text}
+                    </span>
                 </Option>
             ))}
         </Select>
