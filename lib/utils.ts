@@ -1,8 +1,8 @@
-import moment from "moment";
-import atob from "atob";
+import moment from 'moment';
+import atob from 'atob';
 
 export function getLastUpdated(time) {
-	return moment(time).fromNow();
+    return moment(time).fromNow();
 }
 export const noop = () => {};
 
@@ -11,5 +11,9 @@ export const noop = () => {};
  * @param str 要解码的内容
  */
 export function b64ToUtf8(str) {
-	return decodeURIComponent(escape(atob(str)));
+    try {
+        return decodeURIComponent(escape(atob(str)));
+    } catch (error) {
+        console.log(str);
+    }
 }

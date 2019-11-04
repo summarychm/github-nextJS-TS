@@ -1,13 +1,14 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useState, useCallback } from 'react';
 import { NextPageContext } from 'next';
-import { Spin } from 'antd';
+import { Button, Spin, Select } from 'antd';
 
 import { withRepoBasic } from '$components/with-repo-basic';
 import { request } from '$lib/request';
 import { IssueItem } from './IssueItem';
+import { SearchBar } from './searchBar';
 
 const isServer = typeof window === 'undefined';
-
+const Option = Select.Option;
 interface IDetail {
     getInitialProps?: (content: NextPageContext) => any;
     (props: any): ReactElement;
@@ -15,44 +16,25 @@ interface IDetail {
 // Issues 详情
 const Issues: IDetail = (props) => {
     const { initialIssues, labels, owner, name } = props;
-
+    console.log('============ props begin ====================');
+    console.log(Object.keys(props));
+    console.log('============ props end ======================');
     const [issues, setIssues] = useState(initialIssues);
     const [fetching, setFetching] = useState(false); // 是否加载中
     // 筛选条件
     const [label, setLabel] = useState([]);
-    // return <div>111</div>;
+    const [state, setState] = useState();
+
+    const handleLabelChange = useCallback((value) => setLabel(value), []);
+    const handleStateChange = useCallback((value) => setState(value), []);
+
+    const handleSearch = () => {};
+
     return (
         <div className="root">
             {/* search-bar */}
-            {/* <div className="search">
-    <SearchUser onChange={handleCreatorChange} value={creator} />
-    <Select
-      placeholder="状态"
-      onChange={handleStateChange}
-      style={{ width: 200, marginLeft: 20 }}
-      value={state}
-    >
-      <Option value="all">all</Option>
-      <Option value="open">open</Option>
-      <Option value="closed">closed</Option>
-    </Select>
-    <Select
-      mode="multiple"
-      placeholder="Label"
-      onChange={handleLabelChange}
-      style={{ flexGrow: 1, marginLeft: 20, marginRight: 20 }}
-      value={label}
-    >
-      {labels.map(la => (
-        <Option value={la.name} key={la.id}>
-          {la.name}
-        </Option>
-      ))}
-    </Select>
-    <Button type="primary" disabled={fetching} onClick={handleSearch}>
-      搜索
-    </Button>
-  </div> */}
+            <SearchBar labels={labels} />
+            {/* Issues */}
             {fetching ? (
                 <div className="loading">
                     <Spin />
@@ -71,9 +53,6 @@ const Issues: IDetail = (props) => {
                     margin-bottom: 20px;
                     margin-top: 20px;
                 }
-                .search {
-                    display: flex;
-                }
                 .loading {
                     height: 400px;
                     display: flex;
@@ -86,26 +65,24 @@ const Issues: IDetail = (props) => {
 };
 
 Issues.getInitialProps = async (context) => {
-    const { owner, name } = context.query;
-
+    // https://api.github.com/repos/duxianwei520/react/issues
+    // https://api.github.com/repos/duxianwei520/react/labels
     // TODO 使用cache缓存
-    const issuesPromise = await request({ url: `/repos/${owner}/${name}/labels` }, context.req);
-    console.log('============ fetchAry begin ====================');
+    const { owner, name } = context.query;
+    const urlBase = `/repos/${owner}/${name}`;
+    const issuesPromise = request({ url: `${urlBase}/issues` }, context.req);
+    const labelsPromise = request({ url: `${urlBase}/labels` }, context.req, false);
+    const fetchAry = await Promise.all([await issuesPromise, await labelsPromise]);
 
-    console.log(owner, name);
-    console.log(issuesPromise);
-    console.log('============ fetchAry end ======================');
-    // const labelsPromise = request({ url: `/repos/${owner}/${name}/labels` }, context.req);
-    // const fetchAry = await Promise.all([
-    // 	await request({ url: `/repos/${owner}/${name}/issues` }, context.req),
-    // 	await request({ url: `/repos/${owner}/${name}/labels` }, context.req),
-    // ]);
-
+    // console.log('============ fetchAry begin ====================');
+    // console.log(owner, name);
+    // console.log(fetchAry);
+    // console.log('============ fetchAry end ======================');
     return {
         owner,
-        name
-        // initialIssues: fetchAry[0].data,
-        // labels: fetchAry[1].data,
+        name,
+        initialIssues: fetchAry[0].data,
+        labels: fetchAry[1].data
     };
 };
 export default withRepoBasic(Issues, 'issues');

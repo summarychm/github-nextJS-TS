@@ -3,10 +3,10 @@ import { Router } from 'next/router';
 import Link from 'next/link';
 import { withRouter } from 'next/router';
 
-import { request } from '$lib/request';
-
 import { Repo } from '$components/repo';
 import { DetailTabs } from '$components/DetailTabs';
+import { request } from '$lib/request';
+import cache from '$lib/cache';
 
 interface iContext {
     router: Router;
@@ -17,9 +17,15 @@ interface IProps {
     router: Router;
     [prop: string]: any;
 }
+/**
+ * 使用hoc实现readme/issues条件渲染
+ * @param Wrapped DetailComponent
+ * @param type "readme"/"issues"
+ */
 export function withRepoBasic(Wrapped: NextComponentType, type: string) {
     function WithRepoBasic(props: IProps) {
         const { repoBasic, router, ...rest } = props;
+        // FIXME 这里同时render了两次
         let tabType = type;
         return (
             <div className="root">
@@ -49,17 +55,21 @@ export function withRepoBasic(Wrapped: NextComponentType, type: string) {
     WithRepoBasic.getInitialProps = async (context: iContext) => {
         const { router, ctx } = context;
         const { owner, name } = ctx.query;
-        let pageData = {};
+        let pageData: any = {},
+            result: any = {};
         if (Wrapped.getInitialProps) pageData = await Wrapped.getInitialProps(ctx);
 
         // TODO: 加入缓存机制
-        const result = await request({ url: `/repos/${owner}/${name}` }, ctx.req);
-        // console.log("============ result begin ====================");
-        // console.log(result);
-        // console.log("============ result end ======================");
-
+        const url = `/repos/${owner}/${name}`,
+            cacheKey = `${url}/result`;
+        if (cache.getCache(cacheKey)) result = cache.getCache(cacheKey);
+        else {
+            result = await request({ url }, ctx.req);
+            result = result.data || {};
+            cache.setCache(cacheKey, result, 1000 * 60 * 10);
+        }
         return {
-            repoBasic: result.data,
+            repoBasic: result,
             ...pageData
         };
     };

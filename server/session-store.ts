@@ -1,5 +1,4 @@
 import { Redis as typeRedis } from 'ioredis';
-// const Redis=require("ioredis")
 
 export default class RedisSessionStore {
     constructor(public client: typeRedis) {

@@ -11,20 +11,18 @@ const port = parseInt(process.env.PORT || '3000', 10);
 
 const redis = new Redis();
 const nextApp = next({ dev });
-const nextHandle = nextApp.getRequestHandler(); // 将next作为中间件
-
-// const RedisSessionStore = require('./session-store');
-import RedisSessionStore from './session-store';
+const nextHandle = nextApp.getRequestHandler();
 
 import './routerEvents'; // 注册路由钩子log
 import apiRouters from './router/apirouter';
+import RedisSessionStore from './session-store';
 import { requestGithub } from '../lib/request';
 
 interface IRequest extends Request {
     body?: any;
 }
 
-// 等待next编译完成
+// 等待next准备完成
 nextApp.prepare().then(() => {
     const koa = new Koa(); // koa 实例
     koa.keys = ['next.js koa ts redis'];

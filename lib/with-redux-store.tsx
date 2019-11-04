@@ -10,7 +10,7 @@ const __NEXT_REDUX_STORE__ = '__NEXT_REDUX_STORE__';
 function getOrCreateStore(initialState?): Store {
     // Server端直每次创建新的store,否则会request间共享store,导致server/client状态不一致.
     if (isServer) {
-        console.log('Server端运行!');
+        // console.log('Server端运行!');
         return createRootStore(initialState);
     }
     // Client端共用同一store并使用全局变量缓存
