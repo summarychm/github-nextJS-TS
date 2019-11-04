@@ -21,7 +21,12 @@ export function IssueItem({ issue }) {
                     {showDetail ? '隐藏' : '查看'}
                 </Button>
                 <div className="avatar">
-                    <Avatar src={issue.user.avatar_url} shape="square" size={50} />
+                    <Avatar
+                        src={issue.user.avatar_url}
+                        alt={issue.user.login}
+                        shape="square"
+                        size={50}
+                    />
                 </div>
                 <div className="main-info">
                     <h6>

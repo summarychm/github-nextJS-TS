@@ -1,20 +1,41 @@
-import { Button, Select } from 'antd';
+import { Button, Select, message } from 'antd';
 import { useState, useCallback } from 'react';
 
 import { SearchUser } from './searchuser';
+import { request } from '$lib/request';
 const Option = Select.Option;
 
-export function SearchBar({ labels, fetching, onSetFetch }) {
+export function SearchBar({ labels, fetching, onSetFetch, onSetIssues, owner, name }) {
     const [creator, setCreator] = useState();
     const [state, setIssuesState] = useState();
-    const [label, setLabelState] = useState();
+    const [label, setLabelState] = useState([]);
 
     const handleCreatorChange = useCallback((value) => setCreator(value), []);
     const handleStateChange = useCallback((value) => setIssuesState(value), []);
     const handleLabelChange = useCallback((value) => setLabelState(value), []);
     const handleSearch = () => {
         onSetFetch(true);
+        request({ url: getQuery() })
+            .then((res) => {
+                onSetFetch(false);
+                let data = res.data;
+                console.log('============ data begin ====================');
+                console.log(data);
+                console.log('============ data end ======================');
+                onSetIssues(data);
+            })
+            .catch((err) => {
+                console.error('serarchErr:', err);
+                message.error('搜索失败,稍后重试!');
+            });
     };
+    function getQuery() {
+        let queryUrl = `/repos/${owner}/${name}/issues?`;
+        queryUrl += creator ? `&creator=${creator}` : ``;
+        queryUrl += state ? `&state=${state}` : ``;
+        queryUrl += label.length ? `&labels=${label.join(',')}` : '';
+        return queryUrl;
+    }
     return (
         <div className="search">
             <SearchUser

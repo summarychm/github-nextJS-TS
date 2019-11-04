@@ -21,14 +21,22 @@ const Issues: IDetail = (props) => {
     console.log('============ props end ======================');
     const [issues, setIssues] = useState(initialIssues);
     const [fetching, setFetching] = useState(false); // 是否加载中
-
+    const [fetchIssues, setFetchIssues] = useState(false); // 列表是否加载中
     const handleSetFetch = (value: boolean) => setFetching(value);
+    const handleSetIssues = (value) => setIssues(value);
     return (
         <div className="root">
             {/* search-bar */}
-            <SearchBar labels={labels} fetching={fetching} onSetFetch={handleSetFetch} />
+            <SearchBar
+                labels={labels}
+                fetching={fetching}
+                onSetFetch={handleSetFetch}
+                onSetIssues={handleSetIssues}
+                owner={owner}
+                name={name}
+            />
             {/* Issues */}
-            {fetching ? (
+            {fetchIssues ? (
                 <div className="loading">
                     <Spin />
                 </div>
