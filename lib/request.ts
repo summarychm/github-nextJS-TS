@@ -4,25 +4,27 @@ import { github } from '../configUrls';
 
 const isServer = typeof window === 'undefined';
 
-export async function request(
-    { method = 'GET', url, data = {} }: AxiosRequestConfig,
-    req?: any,
-    auth = true
-) {
+export async function request({ method = 'GET', url, data = {} }: AxiosRequestConfig, req?: any) {
     if (!url) throw Error('url must provide');
     console.log('============ url begin ====================');
     console.log(url, isServer);
     console.log('============ url end ======================');
+    if (url.startsWith('http')) {
+        return await axios({ method, url, data });
+    }
     if (isServer) {
         const { session } = req;
         const githubAuth = session.githubAuth || {};
         const headers = {};
-        if (githubAuth.access_token && auth) {
+        if (githubAuth.access_token) {
             headers['Authorization'] = `${githubAuth.token_type} ${githubAuth.access_token}`;
         }
         return await requestGithub(method, url, data, headers);
     } else {
         if (!url.match(/api/i)) url = '/github' + url; // 非api接口都认为是非内部接口
+        console.log('============ url client begin ====================');
+        console.log(url);
+        console.log('============ url client end ======================');
         return await axios({ method, url, data });
     }
 }
