@@ -18,11 +18,7 @@ export function SearchBar({ labels, fetching, onSetFetch, onSetIssues, owner, na
         request({ url: getQuery() })
             .then((res) => {
                 onSetFetch(false);
-                let data = res.data;
-                console.log('============ data begin ====================');
-                console.log(data);
-                console.log('============ data end ======================');
-                onSetIssues(data);
+                onSetIssues(res.data);
             })
             .catch((err) => {
                 console.error('serarchErr:', err);
@@ -56,7 +52,7 @@ export function SearchBar({ labels, fetching, onSetFetch, onSetIssues, owner, na
             </Select>
             <Select
                 mode="multiple"
-                placeholder="Label"
+                placeholder="标签"
                 onChange={handleLabelChange}
                 style={{ flexGrow: 1, marginLeft: 20, marginRight: 20 }}
                 value={label}

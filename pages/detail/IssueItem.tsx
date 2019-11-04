@@ -6,9 +6,7 @@ import { getLastUpdated } from '$lib/utils';
 
 export function IssueItem({ issue }) {
     const [showDetail, setShowDetail] = useState(false);
-
     const toggleShowDetail = useCallback(() => setShowDetail((detail) => !detail), []);
-
     return (
         <div>
             <div className="issue">

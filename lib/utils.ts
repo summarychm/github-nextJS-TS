@@ -14,6 +14,6 @@ export function b64ToUtf8(str) {
     try {
         return decodeURIComponent(escape(atob(str)));
     } catch (error) {
-        console.log(str);
+        console.error('base64ToUtf8-Error:', str);
     }
 }
