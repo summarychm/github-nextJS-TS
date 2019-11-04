@@ -70,8 +70,8 @@ Issues.getInitialProps = async (context) => {
     const labelsKey = `${urlBase}/labels`;
     const issuesKey = `${urlBase}/issues`;
 
-    let labelsPromise = null,
-        issuesPromise = null;
+    let labelsPromise = null;
+        let issuesPromise = null;
     if (cache.getCache(labelsKey)) {
         console.log('labelskey读取缓存');
         labelsPromise = Promise.resolve({ data: cache.getCache(labelsKey) });

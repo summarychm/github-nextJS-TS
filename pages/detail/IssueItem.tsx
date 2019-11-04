@@ -3,6 +3,7 @@ import { Button, Avatar } from 'antd';
 
 import { Label } from './label';
 import { getLastUpdated } from '$lib/utils';
+import { IssueDetail } from './issueDetail';
 
 export function IssueItem({ issue }) {
     const [showDetail, setShowDetail] = useState(false);
@@ -67,7 +68,7 @@ export function IssueItem({ issue }) {
                     }
                 `}</style>
             </div>
-            {/* {showDetail ? <IssueDetail issue={issue} /> : null} */}
+            {showDetail ? <IssueDetail issue={issue} /> : null}
         </div>
     );
 }
