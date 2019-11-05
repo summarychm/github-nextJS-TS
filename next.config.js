@@ -7,7 +7,7 @@ const githubUrls = configUrls.github;
 let str = `${githubUrls.oauth_base_url}?client_id=${githubUrls.client_id}&scope=${githubUrls.scope}`;
 
 const configs = {
-	distDir: "dest",
+	distDir: "dest-front",
 	// generateEtags: true,// 是否给每个路由生成Etag
 	// // 页面内容缓存配置(内存)
 	// onDemandEntries: {
@@ -22,7 +22,7 @@ const configs = {
 	//     return process.env.YOUR_BUILD_ID
 	//   return null // 返回null使用默认的unique id
 	// },
-	// // 手动修改webpack config
+	// 手动修改webpack config
 	webpack(config, options) {
 		config.resolve.alias["$components"] = path.join(__dirname, "components");
 		config.resolve.alias["$lib"] = path.join(__dirname, "lib");

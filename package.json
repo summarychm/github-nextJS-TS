@@ -6,7 +6,7 @@
     "scripts": {
         "dev": "cross-env PORT=8080 nodemon",
         "build": "next build && tsc --project tsconfig.server.json",
-        "start": "cross-env NODE_ENV=production node dist/index.js",
+        "start": "cross-env NODE_ENV=production node dest-server/server/index.js",
         "eslint": "eslint pages store lib layouts --ext .ts,.tsx",
         "eslint:fix": "eslint pages store lib layouts --ext .ts,.tsx --fix"
     },

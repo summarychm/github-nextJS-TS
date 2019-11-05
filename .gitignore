@@ -1,7 +1,8 @@
 node_modules
 config.js
 .next
-dest
+dest-front
+dest-server
 .vscode
 local-code
 
