@@ -1,6 +1,6 @@
 import moment from 'moment';
 import atob from 'atob';
-
+moment.locale('zh-cn');
 export function getLastUpdated(time) {
     return moment(time).fromNow();
 }

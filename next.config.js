@@ -4,7 +4,7 @@ const withCss = require("@zeit/next-css");
 
 const configUrls = require("./configUrls");
 const githubUrls = configUrls.github;
-var str = `${githubUrls.oauth_base_url}?client_id=${githubUrls.client_id}&scope=${githubUrls.scope}`;
+let str = `${githubUrls.oauth_base_url}?client_id=${githubUrls.client_id}&scope=${githubUrls.scope}`;
 
 const configs = {
 	distDir: "dest",
@@ -27,6 +27,8 @@ const configs = {
 		config.resolve.alias["$components"] = path.join(__dirname, "components");
 		config.resolve.alias["$lib"] = path.join(__dirname, "lib");
 		config.resolve.alias["@"] = path.join(__dirname, "./");
+		// moment.js 只加载locale zh-cn文件
+		config.plugins.push(new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /zh-cn/))
 		return config;
 	},
 	// // 修改webpackDevMiddleware配置
