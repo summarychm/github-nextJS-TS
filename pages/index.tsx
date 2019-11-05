@@ -11,7 +11,8 @@ const isServer = typeof window === 'undefined';
 const { publicRuntimeConfig } = getConfig();
 
 // 用于缓存用户项目列表
-let cachedUserRepos; let cachedUserStartRepos;
+let cachedUserRepos;
+let cachedUserStartRepos;
 interface IProps {
     user: {
         [param: string]: any;
@@ -22,7 +23,7 @@ interface IProps {
 }
 function Index({ user, router, userRepos, userStartRepos }: IProps) {
     // getInitialProps,redux,router,dispatch.
-    const tabKey = (router.query.key as string) || '1';
+    const tabKey = (router.query.tabs as string) || 'stars';
 
     // repos缓存 effect
     useEffect(() => {
@@ -36,7 +37,10 @@ function Index({ user, router, userRepos, userStartRepos }: IProps) {
         }
     }, [userRepos, userStartRepos]);
 
-    const handleTabChange = (activeKey) => router.push(`/?key=${activeKey}`);
+    const handleTabChange = (activeKey) => {
+        console.log(activeKey);
+        router.push(`/?tabs=${activeKey}`);
+    };
 
     if (!user || !user.id) {
         return (
@@ -71,12 +75,12 @@ function Index({ user, router, userRepos, userStartRepos }: IProps) {
                 </p>
             </div>
             <Tabs activeKey={tabKey} onChange={handleTabChange} animated={false}>
-                <Tabs.TabPane tab="你的仓库" key="1">
+                <Tabs.TabPane tab="你的仓库" key="repositories">
                     {userRepos.map((repo) => (
                         <Repo key={repo.id} repo={repo} />
                     ))}
                 </Tabs.TabPane>
-                <Tabs.TabPane tab="你关注的仓库" key="2">
+                <Tabs.TabPane tab="你关注的仓库" key="stars">
                     {userStartRepos.map((repo) => (
                         <Repo key={repo.id} repo={repo} />
                     ))}
