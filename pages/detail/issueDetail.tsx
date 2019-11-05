@@ -1,7 +1,7 @@
 import { Button } from 'antd';
 import MarkDownRenderer from '$components/MarkDownRenderer';
 
-export function IssueDetail({ issue }) {
+export default function IssueDetail({ issue }) {
     return (
         <div className="root">
             <MarkDownRenderer content={issue.body} isBase64={false} />

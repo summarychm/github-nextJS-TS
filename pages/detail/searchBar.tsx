@@ -1,11 +1,11 @@
 import { Button, Select, message } from 'antd';
 import { useState, useCallback } from 'react';
 
-import { SearchUser } from './searchuser';
+import SearchUser from './searchuser';
 import { request } from '$lib/request';
 const Option = Select.Option;
 
-export function SearchBar({ labels, fetching, onSetFetch, onSetIssues, owner, name }) {
+export default function SearchBar({ labels, fetching, onSetFetch, onSetIssues, owner, name }) {
     const [creator, setCreator] = useState();
     const [state, setIssuesState] = useState();
     const [label, setLabelState] = useState([]);

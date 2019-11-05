@@ -11,7 +11,7 @@ interface IProps {
     order?: string;
     page?: number;
 }
-export function FilterLink(props: IProps) {
+export default function FilterLink(props: IProps) {
     let { name } = props;
     let queryString = getQueryString(props);
     return (

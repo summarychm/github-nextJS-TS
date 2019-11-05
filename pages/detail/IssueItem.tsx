@@ -1,11 +1,11 @@
 import { useState, useCallback } from 'react';
 import { Button, Avatar } from 'antd';
 
-import { Label } from './label';
+import Label from './label';
 import { getLastUpdated } from '$lib/utils';
-import { IssueDetail } from './issueDetail';
+import IssueDetail from './issueDetail';
 
-export function IssueItem({ issue }) {
+export default function IssueItem({ issue }) {
     const [showDetail, setShowDetail] = useState(false);
     const toggleShowDetail = useCallback(() => setShowDetail((detail) => !detail), []);
     return (

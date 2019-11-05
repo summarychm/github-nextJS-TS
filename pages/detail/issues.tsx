@@ -5,8 +5,8 @@ import { Spin } from 'antd';
 import { withRepoBasic } from '$components/with-repo-basic';
 import { request } from '$lib/request';
 import cache from '$lib/cache';
-import { IssueItem } from './IssueItem';
-import { SearchBar } from './searchBar';
+import IssueItem from './IssueItem';
+import SearchBar from './searchBar';
 
 const isServer = typeof window === 'undefined';
 
@@ -71,7 +71,7 @@ Issues.getInitialProps = async (context) => {
     const issuesKey = `${urlBase}/issues`;
 
     let labelsPromise = null;
-        let issuesPromise = null;
+    let issuesPromise = null;
     if (cache.getCache(labelsKey)) {
         console.log('labelskey读取缓存');
         labelsPromise = Promise.resolve({ data: cache.getCache(labelsKey) });

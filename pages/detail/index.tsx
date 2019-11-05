@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 
 import { request } from '$lib/request';
 import { withRepoBasic } from '$components/with-repo-basic';
-import cache from '$lib/cache';
+
 interface IDetail {
     getInitialProps?: (content: NextPageContext) => any;
     (props: any): ReactElement;

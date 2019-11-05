@@ -5,7 +5,7 @@ import { request } from '$lib/request';
 import { useDebounceCallback } from '$lib/useDebounceCallback';
 
 const Option = Select.Option;
-export function SearchUser({ value, onChange, fetching, onSetFetch }) {
+export default function SearchUser({ value, onChange, fetching, onSetFetch }) {
     const [options, setOptions] = useState([]);
     const fetchUser = useDebounceCallback((value) => {
         value = value.trim();
