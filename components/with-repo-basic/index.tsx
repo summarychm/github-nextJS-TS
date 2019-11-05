@@ -59,7 +59,6 @@ export function withRepoBasic(Wrapped: NextComponentType, type: string) {
             result: any = {};
         if (Wrapped.getInitialProps) pageData = await Wrapped.getInitialProps(ctx);
 
-        // TODO: 加入缓存机制
         const url = `/repos/${owner}/${name}`,
             cacheKey = `${url}/result`;
         if (cache.getCache(cacheKey)) result = cache.getCache(cacheKey);

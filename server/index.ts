@@ -80,4 +80,9 @@ nextApp.prepare().then(() => {
             }`
         );
     });
+    koa.on('error', function(error) {
+        console.log('============ error begin ====================');
+        console.log(error);
+        console.log('============ error end ======================');
+    });
 });

@@ -34,9 +34,14 @@ export function IssueItem({ issue }) {
                             <Label label={label} key={label.id} />
                         ))}
                     </h6>
-                    <p className="sub-info">
-                        <span>Updated at {getLastUpdated(issue.updated_at)}</span>
-                    </p>
+                    <div>
+                        <p className="sub-info">
+                            <span>Updated at {getLastUpdated(issue.updated_at)}</span>
+                        </p>
+                        <p className="sub-info">
+                            <a href={issue.user.html_url}>{issue.user.login}</a>
+                        </p>
+                    </div>
                 </div>
                 <style jsx>{`
                     .issue {
@@ -59,6 +64,8 @@ export function IssueItem({ issue }) {
                         margin-right: 20px;
                     }
                     .sub-info {
+                        float: left;
+                        margin-right: 20px;
                         margin-bottom: 0;
                     }
                     .sub-info > span + span {
