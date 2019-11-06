@@ -32,6 +32,7 @@ module.exports = {
 		"no-return-await": 0,
 		"no-param-reassign": 0,
 		"@typescript-eslint/explicit-member-accessibility": 0,
-		"@typescript-eslint/no-parameter-properties": 0
+		"@typescript-eslint/no-parameter-properties": 0,
+		"@typescript-eslint/no-var-requires": 0
 	},
 };
