@@ -14,7 +14,7 @@ const configs = {
 	//   maxInactiveAge: 25 * 1000,//缓存的时长（ms）
 	//   pagesBufferLength: 2,//同时缓存个数
 	// },
-	// // 在pages目录下那种后缀的文件会被认为是页面
+	// 在pages目录下哪种后缀的文件会被认为是页面
 	// pageExtensions: ['ts', 'jsx', 'js'],
 	// // 配置buildId
 	// generateBuildId: async () => {
@@ -47,10 +47,9 @@ const configs = {
 	// },
 	// 在服务端渲染和客户端渲染都可获取的配置
 	publicRuntimeConfig: {
-		per_count: 30,
+		per_count: 20, //每页条数
 		OAUTH_BASE_URL: githubUrls.oauth_base_url,
 		OAUTH_URL: `${githubUrls.oauth_base_url}?client_id=${githubUrls.client_id}&scope=${githubUrls.scope}`,
-		//
 	},
 };
 

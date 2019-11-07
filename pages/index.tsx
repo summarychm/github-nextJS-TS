@@ -1,39 +1,45 @@
 import React, { useEffect } from 'react';
+import { Dispatch, Store } from 'redux';
 import { connect } from 'react-redux';
-import getConfig from 'next/config';
-import { withRouter, Router } from 'next/router';
 import { Tabs, Button, Icon } from 'antd';
+import { NextPageContext } from 'next';
+import getConfig from 'next/config';
+import { useRouter, NextRouter } from 'next/router';
 
 import { request } from '$lib/request';
 import { Repo } from '$components/repo';
+import cache from '$lib/cache';
 
 const isServer = typeof window === 'undefined';
 const { publicRuntimeConfig } = getConfig();
 
-// 用于缓存用户项目列表
-let cachedUserRepos;
-let cachedUserStartRepos;
+// 用于缓存Repos & Starts的key
+const userReposKey = 'index-UserRepos';
+const userStartKey = 'index-UserStartRepos';
+
 interface IProps {
     user: {
         [param: string]: any;
     };
-    router: Router;
     userRepos: any[];
     userStartRepos: any[];
+    isLogin: boolean;
+    dispatch: Dispatch;
 }
-function Index({ user, router, userRepos, userStartRepos }: IProps) {
-    // getInitialProps,redux,router,dispatch.
+interface IGetinitialProps {
+    AppTree: any; // NextPageContext.AppTree
+    ctx: NextPageContext;
+    reduxStore: Store;
+}
+function Index({ user, userRepos, userStartRepos }: IProps) {
+    const router: NextRouter = useRouter();
     const tabKey = (router.query.tabs as string) || 'stars';
 
-    // repos缓存 effect
     useEffect(() => {
         if (!isServer) {
-            cachedUserRepos = userRepos;
-            cachedUserStartRepos = userStartRepos;
-            setTimeout(() => {
-                cachedUserRepos = null;
-                cachedUserStartRepos = null;
-            }, 1000 * 60 * 10);
+            // 更新repos缓存
+            cache.setCache(userReposKey, userRepos);
+            cache.setCache(userStartKey, userStartRepos);
         }
     }, [userRepos, userStartRepos]);
 
@@ -87,13 +93,6 @@ function Index({ user, router, userRepos, userStartRepos }: IProps) {
                 </Tabs.TabPane>
             </Tabs>
             <style jsx>{`
-                .root {
-                    display: flex;
-                    align-items: flex-start;
-                    padding: 20px 0;
-                    max-width: 1200px;
-                    margin: 0 auto;
-                }
                 .user-info {
                     width: 200px;
                     margin-right: 40px;
@@ -116,7 +115,7 @@ function Index({ user, router, userRepos, userStartRepos }: IProps) {
                 }
                 .avatar {
                     width: 100%;
-                    border-radius: 5px;
+                    border-radius: 20px;
                 }
                 .user-repos {
                     flex-grow: 1;
@@ -128,18 +127,18 @@ function Index({ user, router, userRepos, userStartRepos }: IProps) {
         </div>
     );
 }
-// 服务端渲染
-Index.getInitialProps = async function({ ctx, reduxStore }) {
+// SSR
+Index.getInitialProps = async function({ ctx, reduxStore }: IGetinitialProps) {
     const user = reduxStore.getState().user;
-    if (!user || !user.id) return { isLogin: false };
+    if (!user || !user.id) return { isLogin: false }; // 未登录
 
     // 客户端情况,尝试优先读取缓存
     if (!isServer) {
-        if (cachedUserRepos && cachedUserStartRepos) {
+        if (cache.getCache(userReposKey) && cache.getCache(userStartKey)) {
             return {
                 isLogin: true,
-                userRepos: cachedUserRepos,
-                userStartRepos: cachedUserStartRepos
+                userRepos: cache.getCache(userReposKey),
+                userStartRepos: cache.getCache(userStartKey)
             };
         }
     }
@@ -150,15 +149,14 @@ Index.getInitialProps = async function({ ctx, reduxStore }) {
         { method: 'GET', url: '/user/starred', data: null },
         ctx.req
     );
-    let resultData = {
+    return {
         isLogin: true,
         userRepos: userRepos.data,
         userStartRepos: userStartRepos.data
     };
-    return resultData;
 };
 
 const mapStateToProps = (state) => {
     return { user: state.user };
 };
-export default withRouter(connect(mapStateToProps)(Index));
+export default connect(mapStateToProps)(Index);

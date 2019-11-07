@@ -1,6 +1,6 @@
 {
-	"watch": ["server/**/*"],
-	"exec": "ts-node --project tsconfig.server.json server/index.ts",
-	"ignore": ["node_modules", "dest"],
-	"ext": "js ts tsx"
+    "watch": ["server"],
+    "exec": "ts-node --project tsconfig.server.json server/index.ts",
+    "ignore": ["node_modules", "dest"],
+    "ext": "js ts tsx"
 }

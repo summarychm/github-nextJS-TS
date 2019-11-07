@@ -1,38 +1,38 @@
 import App from 'next/app';
-import { Router } from 'next/router';
-import { Store } from 'redux';
-import { Provider } from 'react-redux';
+import {Store} from 'redux';
+import {Provider} from 'react-redux';
 
 import 'antd/dist/antd.css';
 import '../public/style/global.css';
 
-import Layout from '../layouts';
-import { withReduxStore } from '$lib/with-redux-store';
-import { withLoading } from '$components/with-loading';
+import PageLayout from '../layouts';
+import {withReduxStore} from '$lib/with-redux-store';
+import {withLoading} from '$components/with-loading';
 
 interface IProps {
-    Component: React.ReactElement;
-    pageProps: any;
-    reduxStore: Store;
+    Component: React.ReactElement; // 要渲染的Component
+    pageProps: any; // 要渲染的Component的getInitialProps返回值
+    reduxStore: Store; // 根据后端ReduxState创建的Reduxstore
 }
 class MyApp extends App<IProps> {
-    // SSR/ RouterChange
-    public static async getInitialProps(ctx) {
-        const { Component } = ctx;
+    // 触发时机: SSR / RouterChange
+    static async getInitialProps(ctx) {
+        const {Component} = ctx;
         let pageProps = {};
-        // 调用要渲染组件的 getInitialProps
+        // 调用要渲染组件的getInitialProps获取所需的props
         if (Component.getInitialProps) pageProps = await Component.getInitialProps(ctx);
-        return { pageProps };
+        return {pageProps};
     }
-    public render() {
-        const { Component, pageProps, reduxStore } = this.props;
+    render() {
+        const {Component, pageProps, reduxStore} = this.props;
         return (
             <Provider store={reduxStore}>
-                <Layout>
+                <PageLayout>
                     <Component {...pageProps} />
-                </Layout>
+                </PageLayout>
             </Provider>
         );
     }
 }
+// HOC loading & redux 
 export default withReduxStore(withLoading(MyApp));

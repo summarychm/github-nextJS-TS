@@ -1,7 +1,5 @@
 import { NextPageContext, NextComponentType } from 'next';
-import { Router } from 'next/router';
-import Link from 'next/link';
-import { withRouter } from 'next/router';
+import { NextRouter, withRouter } from 'next/router';
 
 import { Repo } from '$components/repo';
 import { DetailTabs } from '$components/DetailTabs';
@@ -9,12 +7,12 @@ import { request } from '$lib/request';
 import cache from '$lib/cache';
 
 interface iContext {
-    router: Router;
+    router: NextRouter;
     ctx: NextPageContext;
 }
 interface IProps {
     repoBasic: any;
-    router: Router;
+    router: NextRouter;
     [prop: string]: any;
 }
 /**
@@ -33,17 +31,17 @@ export function withRepoBasic(Wrapped: NextComponentType, type: string) {
                     <Repo repo={repoBasic} />
                     <DetailTabs type={tabType} queryObj={router.query} />
                 </div>
-                <div>
-                    <Wrapped {...rest} />
-                </div>
+                <Wrapped {...rest} />
                 <style jsx>{`
                     .root {
                         padding: 20px 0;
+                        flex-direction: column;
                         max-width: 1200px;
                         margin: 0 auto;
                     }
                     .repo-basic {
                         padding: 20px;
+                        width: 100%;
                         border: 1px solid #eee;
                         margin-bottom: 20px;
                         border-radius: 5px;
@@ -53,7 +51,7 @@ export function withRepoBasic(Wrapped: NextComponentType, type: string) {
         );
     }
     WithRepoBasic.getInitialProps = async (context: iContext) => {
-        const { router, ctx } = context;
+        const { ctx } = context;
         const { owner, name } = ctx.query;
         let pageData: any = {},
             result: any = {};

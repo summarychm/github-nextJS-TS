@@ -1,19 +1,21 @@
 import { ReactChild, useCallback, useState } from 'react';
-import { Dropdown, Layout, Icon, Menu, Avatar, Input, Tooltip, message } from 'antd';
+import { Layout, Icon, Input, message } from 'antd';
 import { connect } from 'react-redux';
 import Link from 'next/link';
-import getConfig from 'next/config';
-import { withRouter, Router } from 'next/router';
+import { useRouter, NextRouter } from 'next/router';
 
 import { UserInfo } from '$components/userInfo';
-
-import Container from './Components/Container'; // HOC,减少DOM层级
+import WithContainer from './withContainer'; // HOC,减少DOM层级
 import userAction from '../store/actions/user';
-import userReducer from 'store/reducers/user';
+
+interface IProps {
+    children: ReactChild;
+    user: any;
+    logOut?: () => void;
+}
 
 const { Header, Content, Footer } = Layout;
-const { publicRuntimeConfig } = getConfig();
-
+// FIXME 这个style对象是否可以换成class?
 const styleObj: any = {
     githubIcon: {
         color: 'white',
@@ -24,29 +26,25 @@ const styleObj: any = {
     },
     footer: { textAlign: 'center' }
 };
-interface IProps {
-    children: ReactChild;
-    user: any;
-    router: Router;
-    logOut?: () => void;
-}
-function MyLayout(props: IProps) {
-    const { children, router } = props;
-    const urlQuery = router.query && router.query.query;
 
-    const [search, setSearch] = useState(urlQuery || '');
+function PageLayout(props: IProps) {
+    const router: NextRouter = useRouter();
+    const { children } = props;
+    const urlQuery = (router.query && router.query.query) || '';
 
+    const [search, setSearch] = useState(urlQuery); // searchState
+    const handleOnChange = useCallback((e) => setSearch(e.target.value || ''), [setSearch]);
     const handleOnSearch = useCallback(() => {
         if (!search) return message.error('搜索内容不能为空');
         router.push(`/search?query=${search}`);
     }, [router, search]);
-    const handleOnChange = useCallback((e) => setSearch(e.target.value || ''), [setSearch]);
 
     return (
         <Layout>
             <Header>
-                <Container Component={<div className="header-inner" />}>
+                <WithContainer Component={<div className="header-inner" />}>
                     <div className="header-left">
+                        {/* FIXME 这里的层次结构可以精简下 */}
                         <>
                             <Link href="/">
                                 <a>
@@ -66,14 +64,11 @@ function MyLayout(props: IProps) {
                     <div className="header-right">
                         <UserInfo user={props.user} logout={props.logOut} />
                     </div>
-                </Container>
+                </WithContainer>
             </Header>
             <Content>{children}</Content>
             <Footer style={styleObj.footer}>Develop by max</Footer>
             <style jsx>{`
-                .content {
-                    color: red;
-                }
                 .header-inner {
                     display: flex;
                     justify-content: space-between;
@@ -87,10 +82,8 @@ function MyLayout(props: IProps) {
     );
 }
 
-const mapStateToProps = function(state) {
-    return { user: state.user };
-};
+const mapStateToProps = (state) => ({ user: state.user });
 export default connect(
     mapStateToProps,
     userAction
-)(withRouter(MyLayout));
+)(PageLayout);

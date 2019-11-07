@@ -1,6 +1,5 @@
 import { Row, Col, Pagination, List } from 'antd';
-import Link from 'next/link';
-import { withRouter, Router } from 'next/router';
+import { withRouter, NextRouter } from 'next/router';
 import getConfig from 'next/config';
 
 import { request } from '$lib/request';
@@ -44,7 +43,7 @@ const { publicRuntimeConfig } = getConfig();
 // const isServer = typeof window === "undefined";
 const per_page = publicRuntimeConfig.per_count;
 interface IProps {
-    router: Router;
+    router: NextRouter;
     repos: any;
 }
 
@@ -52,7 +51,7 @@ function Search({ router, repos }: IProps) {
     const { ...querys } = router.query;
     const { lang, sort, order, page } = router.query;
     return (
-        <div className="root">
+        <>
             <Row gutter={20}>
                 {/* left - searchOptions */}
                 <Col span={6}>
@@ -127,8 +126,8 @@ function Search({ router, repos }: IProps) {
             <style jsx>{`
                 .root {
                     padding: 20px 0;
-                    max-width: 1200px;
                     margin: 0 auto;
+                    flex-direction: column;
                 }
                 .list-header {
                     font-weight: 800;
@@ -144,18 +143,13 @@ function Search({ router, repos }: IProps) {
                     text-align: center;
                 }
             `}</style>
-        </div>
+        </>
     );
 }
 Search.getInitialProps = async ({ ctx }) => {
     const { query } = ctx.query;
-    if (!query) {
-        return {
-            repos: {
-                total_count: 0
-            }
-        };
-    }
+    if (!query) return { repos: { total_count: 0 } };
+
     let queryString = getQueryString(ctx.query);
     // 针对github接口单独处理
     queryString = queryString.replace(/&lang=/, '+language:').replace('query=', 'q=');

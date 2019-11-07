@@ -1,7 +1,7 @@
-import { Button } from 'antd';
+import {Button} from 'antd';
 import MarkDownRenderer from '$components/MarkDownRenderer';
 
-export default function IssueDetail({ issue }) {
+export default function IssueDetail({issue}) {
     return (
         <div className="root">
             <MarkDownRenderer content={issue.body} isBase64={false} />
@@ -14,6 +14,7 @@ export default function IssueDetail({ issue }) {
                 .root {
                     background: #fefefe;
                     padding: 20px;
+                    flex-direction: column;
                 }
                 .actions {
                     text-align: right;

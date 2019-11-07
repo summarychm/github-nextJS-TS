@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    "incremental": true, // 增量编译
+    "tsBuildInfoFile": "./buildFile", // 增量编译文件的存储位置
+    // "diagnostics": true, // 打印诊断信息
     "target": "es6",
     "module": "esnext",
     "jsx": "preserve",
@@ -12,6 +15,8 @@
     "strict": false,
     "allowJs": true,
     "noEmit": true,
+    "noEmitHelpers": true, // 不生成helper函数,而是通过tslib导入,减小code体积
+    "importHelpers": true, // 从 tslib 导入辅助工具函数
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -23,10 +28,6 @@
     "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "typeRoots": [
-      "./node_modules/@types",
-      "./typings/**/*"
-    ],
     "paths": {
       "$components/*": [
         "./components/*"

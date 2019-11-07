@@ -1,4 +1,4 @@
-import { ReactElement, useState, useCallback } from 'react';
+import { ReactElement, useState } from 'react';
 import { NextPageContext } from 'next';
 import { Spin } from 'antd';
 
@@ -7,8 +7,6 @@ import { request } from '$lib/request';
 import cache from '$lib/cache';
 import IssueItem from './IssueItem';
 import SearchBar from './searchBar';
-
-const isServer = typeof window === 'undefined';
 
 interface IDetail {
     getInitialProps?: (content: NextPageContext) => any;
@@ -47,7 +45,14 @@ const Issues: IDetail = (props) => {
                 </div>
             )}
             <style jsx>{`
+                .root {
+                    flex-direction: column;
+                    width: 100%;
+                    display: flex;
+                    flex: 1;
+                }
                 .issues {
+                    width: 100%;
                     border: 1px solid #eee;
                     border-radius: 5px;
                     margin-bottom: 20px;
@@ -55,6 +60,7 @@ const Issues: IDetail = (props) => {
                 }
                 .loading {
                     height: 400px;
+                    width: 100%;
                     display: flex;
                     align-items: center;
                     justify-content: center;

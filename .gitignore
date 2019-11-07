@@ -8,3 +8,4 @@ local-code
 
 .DS_Store
 .env
+buildFile

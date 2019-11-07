@@ -6,9 +6,6 @@ const isServer = typeof window === 'undefined';
 
 export async function request({ method = 'GET', url, data = {} }: AxiosRequestConfig, req?: any) {
     if (!url) throw Error('url must provide');
-    // console.log('============ url begin ====================');
-    // console.log(url, isServer);
-    // console.log('============ url end ======================');
     if (url.startsWith('http')) return await axios({ method, url, data });
     if (isServer) {
         const { session } = req;

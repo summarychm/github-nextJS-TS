@@ -1,5 +1,6 @@
 #__next {
 	height: 100%;
+	
 }
 .ant-layout {
 	min-height: 100%;
@@ -10,4 +11,15 @@
 }
 .ant-layout-content {
 	background: #fff;
+	width: 100%;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 10px;
+}
+
+.root {
+	display: flex;
+	align-items: flex-start;
+	padding: 20px 0;
+	margin: 0 auto;
 }

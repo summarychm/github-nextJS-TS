@@ -1,11 +1,11 @@
-import { Button, Select, message } from 'antd';
-import { useState, useCallback } from 'react';
+import {Button, Select, message} from 'antd';
+import {useState, useCallback} from 'react';
 
 import SearchUser from './searchuser';
-import { request } from '$lib/request';
+import {request} from '$lib/request';
 const Option = Select.Option;
 
-export default function SearchBar({ labels, fetching, onSetFetch, onSetIssues, owner, name }) {
+export default function SearchBar({labels, fetching, onSetFetch, onSetIssues, owner, name}) {
     const [creator, setCreator] = useState();
     const [state, setIssuesState] = useState();
     const [label, setLabelState] = useState([]);
@@ -15,7 +15,7 @@ export default function SearchBar({ labels, fetching, onSetFetch, onSetIssues, o
     const handleLabelChange = useCallback((value) => setLabelState(value), []);
     const handleSearch = () => {
         onSetFetch(true);
-        request({ url: getQuery() })
+        request({url: getQuery()})
             .then((res) => {
                 onSetFetch(false);
                 onSetIssues(res.data);
@@ -43,7 +43,7 @@ export default function SearchBar({ labels, fetching, onSetFetch, onSetIssues, o
             <Select
                 placeholder="状态"
                 onChange={handleStateChange}
-                style={{ width: 200, marginLeft: 20 }}
+                style={{width: 200, marginLeft: 20}}
                 value={state}
             >
                 <Option value="all">All</Option>
@@ -54,7 +54,7 @@ export default function SearchBar({ labels, fetching, onSetFetch, onSetIssues, o
                 mode="multiple"
                 placeholder="标签"
                 onChange={handleLabelChange}
-                style={{ flexGrow: 1, marginLeft: 20, marginRight: 20 }}
+                style={{flexGrow: 1, marginLeft: 20, marginRight: 20}}
                 value={label}
             >
                 {labels.map((item) => (
@@ -69,6 +69,7 @@ export default function SearchBar({ labels, fetching, onSetFetch, onSetIssues, o
             <style jsx>{`
                 .search {
                     display: flex;
+                    width:100%;
                 }
             `}</style>
         </div>

@@ -30,37 +30,26 @@ interface IProps {
  * @param WrappedComponent 要实现redux的Component
  */
 export const withReduxStore = (WrappedComponent) => {
-    return class WithComponent extends React.Component<IProps> {
-        public static async getInitialProps(appContext) {
-            let initialValue = {}; // 设置server端redux的初始值,如token信息
-            let appProps = {}; // 其他component所需的props
-            if (isServer) {
-                const session = appContext.ctx.req.session; // 读取用户信息写入redux
-                if (session) initialValue = { user: session.userInfo };
-            }
-
-            const store = getOrCreateStore(initialValue); // 创建/获取store
-            appContext.reduxStore = store; // 挂载到ctx
-
-            // 调用子组件的 getInitialProps 获取初始化所需的pops
-            if (typeof WrappedComponent.getInitialProps === 'function') {
-                appProps = await WrappedComponent.getInitialProps(appContext);
-            }
-            return {
-                ...appProps,
-                initialReduxState: store.getState()
-            };
+    function WithComponent(props) {
+        const reduxStore = getOrCreateStore(props.initialReduxState);
+        return <WrappedComponent {...props} reduxStore={reduxStore} />;
+    }
+    WithComponent.getInitialProps = async function(appContext) {
+        let appProps = {};
+            let initialValue = {};
+        if (isServer) {
+            const session = appContext.ctx.req.session;
+            if (session) initialValue = { user: session.userInfo };
         }
-        public reduxStore: Store; // 缓存store对象
+        const store = getOrCreateStore(initialValue);
+        appContext.reduxStore = store; // 挂载到ctx
+        if (typeof WrappedComponent.getInitialProps === 'function')
+            appProps = await WrappedComponent.getInitialProps(appContext);
 
-        public constructor(props) {
-            super(props);
-            // Client: 根据props.state创建store对象
-            this.reduxStore = getOrCreateStore(props.initialReduxState);
-        }
-        public render() {
-            // 透传props,加料reduxStore
-            return <WrappedComponent {...this.props} reduxStore={this.reduxStore} />;
-        }
+        return {
+            ...appProps,
+            initialReduxState: store.getState()
+        };
     };
+    return WithComponent;
 };
