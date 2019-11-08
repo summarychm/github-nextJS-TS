@@ -1,4 +1,4 @@
-import { ReactChild, useCallback, useState } from 'react';
+import { ReactChild, useCallback, useState, ChangeEvent } from 'react';
 import { Layout, Icon, Input, message } from 'antd';
 import { connect } from 'react-redux';
 import Link from 'next/link';
@@ -21,7 +21,10 @@ function PageLayout({ children, user, logOut }: IProps) {
     const urlQuery = (router.query && router.query.query) || '';
 
     const [searchVal, setSearch] = useState(urlQuery);
-    const handleOnChange = useCallback((e) => setSearch(e.target.value || ''), [setSearch]);
+    const handleOnChange = useCallback(
+        (e: ChangeEvent<HTMLInputElement>) => setSearch(e.target.value || ''),
+        [setSearch]
+    );
     const handleOnSearch = useCallback(() => {
         if (!searchVal) return message.error('搜索内容不能为空');
         router.push(`/search?query=${searchVal}`);

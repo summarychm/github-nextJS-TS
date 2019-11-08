@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Dispatch, Store } from 'redux';
 import { connect } from 'react-redux';
 import { Tabs, Button, Icon } from 'antd';
-import { NextPageContext } from 'next';
+import { NextPageContext, NextPage } from 'next';
 import getConfig from 'next/config';
 import { useRouter, NextRouter } from 'next/router';
 
@@ -16,7 +16,10 @@ const { publicRuntimeConfig } = getConfig();
 // 用于缓存Repos & Starts的key
 const userReposKey = 'index-UserRepos';
 const userStartKey = 'index-UserStartRepos';
-
+interface IGetinitialProps {
+    ctx: NextPageContext;
+    reduxStore: Store;
+}
 interface IProps {
     user: {
         [param: string]: any;
@@ -25,13 +28,11 @@ interface IProps {
     userStartRepos: any[];
     isLogin: boolean;
     dispatch: Dispatch;
+    getInitialProps?: IGetinitialProps;
 }
-interface IGetinitialProps {
-    ctx: NextPageContext;
-    reduxStore: Store;
-}
-function Index({ user, userRepos, userStartRepos }: IProps) {
-    const router: NextRouter = useRouter();
+
+let Index: NextPage<IProps> = ({ user, userRepos, userStartRepos }) => {
+    const router = useRouter();
     const tabKey = (router.query.tabs as string) || 'stars';
 
     useEffect(() => {
@@ -125,9 +126,9 @@ function Index({ user, userRepos, userStartRepos }: IProps) {
             `}</style>
         </div>
     );
-}
+};
 // SSR
-Index.getInitialProps = async function({ ctx, reduxStore }: IGetinitialProps) {
+Index.getInitialProps = async function({ ctx, reduxStore }) {
     const user = reduxStore.getState().user;
     if (!user || !user.id) return { isLogin: false }; // 未登录
 
