@@ -15,59 +15,46 @@ interface IProps {
 }
 
 const { Header, Content, Footer } = Layout;
-// FIXME 这个style对象是否可以换成class?
-const styleObj: any = {
-    githubIcon: {
-        color: 'white',
-        fontSize: 40,
-        display: 'block',
-        paddingTop: 10,
-        marginRight: 20
-    },
-    footer: { textAlign: 'center' }
-};
 
-function PageLayout(props: IProps) {
+function PageLayout({ children, user, logOut }: IProps) {
     const router: NextRouter = useRouter();
-    const { children } = props;
     const urlQuery = (router.query && router.query.query) || '';
 
-    const [search, setSearch] = useState(urlQuery); // searchState
+    const [searchVal, setSearch] = useState(urlQuery);
     const handleOnChange = useCallback((e) => setSearch(e.target.value || ''), [setSearch]);
     const handleOnSearch = useCallback(() => {
-        if (!search) return message.error('搜索内容不能为空');
-        router.push(`/search?query=${search}`);
-    }, [router, search]);
+        if (!searchVal) return message.error('搜索内容不能为空');
+        router.push(`/search?query=${searchVal}`);
+    }, [router, searchVal]);
 
     return (
         <Layout>
             <Header>
                 <WithContainer Component={<div className="header-inner" />}>
                     <div className="header-left">
-                        {/* FIXME 这里的层次结构可以精简下 */}
-                        <>
-                            <Link href="/">
-                                <a>
-                                    <Icon type="github" style={styleObj.githubIcon} />
-                                </a>
-                            </Link>
-                        </>
+                        <Link href="/">
+                            <a className="github-icon">
+                                <Icon type="github" />
+                            </a>
+                        </Link>
                         <div>
                             <Input.Search
                                 placeholder="搜索仓库"
-                                value={search}
+                                value={searchVal}
                                 onSearch={handleOnSearch}
                                 onChange={handleOnChange}
                             />
                         </div>
                     </div>
                     <div className="header-right">
-                        <UserInfo user={props.user} logout={props.logOut} />
+                        <UserInfo user={user} logout={logOut} />
                     </div>
                 </WithContainer>
             </Header>
             <Content>{children}</Content>
-            <Footer style={styleObj.footer}>Develop by max</Footer>
+            <Footer>
+                <span className="footer-title">Develop by max</span>
+            </Footer>
             <style jsx>{`
                 .header-inner {
                     display: flex;
@@ -77,12 +64,26 @@ function PageLayout(props: IProps) {
                     display: flex;
                     justify-content: flex-start;
                 }
+                .github-icon {
+                    color: white;
+                    font-size: 40px;
+                    display: block;
+                    margin-right: 20px;
+                }
+                .footer-title {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    text-align: center;
+                    font-size: 16px;
+                }
             `}</style>
         </Layout>
     );
 }
 
 const mapStateToProps = (state) => ({ user: state.user });
+
 export default connect(
     mapStateToProps,
     userAction

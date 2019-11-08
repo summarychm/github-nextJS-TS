@@ -1,5 +1,5 @@
 // 根据 Component属性(ReactElement|string)动态创建组件,并将获取到的props都作为自身属性渲染,减少 dom 层次,提升灵活性
-import React, {ReactChild, ReactElement} from 'react';
+import React, { ReactChild, ReactElement } from 'react';
 
 const styleObj = {
     width: '100%',
@@ -14,8 +14,7 @@ interface IProps {
     Component: ReactElement | string;
 }
 
-function withContainer(props: IProps) {
-    const {children, Component} = props;
+function withContainer({ children, Component }: IProps) {
     if (typeof Component === 'string')
         return React.createElement(Component, {
             style: styleObj,
@@ -23,8 +22,8 @@ function withContainer(props: IProps) {
         });
     else
         return React.cloneElement(Component, {
-            style: {...styleObj, ...Component.props.style},
+            style: { ...styleObj, ...Component.props.style },
             children
         });
-};
+}
 export default withContainer;

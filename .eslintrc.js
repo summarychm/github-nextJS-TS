@@ -5,6 +5,7 @@ module.exports = {
 		es6: true,
 	},
 	extends: [
+		// alloy规则
 		'alloy',
 		'alloy/typescript',
 	],
@@ -12,8 +13,10 @@ module.exports = {
 		Atomics: "readonly",
 		SharedArrayBuffer: "readonly",
 	},
+	// typescript 解析器
 	parser: "@typescript-eslint/parser",
 	parserOptions: {
+		// "project":"./tsconfig.json", //继承tsc配置信息
 		ecmaVersion: 2018,
 		sourceType: "module",
 		ecmaFeatures: {
@@ -21,6 +24,7 @@ module.exports = {
 			jsx: true,
 		},
 	},
+	// react和ts的plugin
 	plugins: ["react", "react-hooks", "@typescript-eslint"],
 	rules: {
 		"react-hooks/rules-of-hooks": "error",

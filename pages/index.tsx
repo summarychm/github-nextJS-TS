@@ -27,7 +27,6 @@ interface IProps {
     dispatch: Dispatch;
 }
 interface IGetinitialProps {
-    AppTree: any; // NextPageContext.AppTree
     ctx: NextPageContext;
     reduxStore: Store;
 }
