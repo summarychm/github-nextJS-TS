@@ -5,6 +5,7 @@ import { Repo } from '$components/repo';
 import { DetailTabs } from '$components/DetailTabs';
 import { request } from '$lib/request';
 import cache from '$lib/cache';
+import { INextFC } from '$interface';
 
 interface iContext {
     router: NextRouter;
@@ -20,7 +21,7 @@ interface IProps {
  * @param Wrapped DetailComponent
  * @param type "readme"/"issues"
  */
-export function withRepoBasic(Wrapped: NextComponentType, type: string) {
+export function withRepoBasic(Wrapped: INextFC<{}>, type: string) {
     function WithRepoBasic(props: IProps) {
         const { repoBasic, router, ...rest } = props;
         // FIXME 这里同时render了两次

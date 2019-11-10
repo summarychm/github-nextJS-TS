@@ -1,18 +1,19 @@
-import { ReactElement } from 'react';
-import { NextPageContext, NextComponentType } from 'next';
 import dynamic from 'next/dynamic';
 
+import { INextFC } from '$interface';
 import { request } from '$lib/request';
 import { withRepoBasic } from '$components/with-repo-basic';
 
 interface IDetail {
-    getInitialProps?: (content: NextPageContext) => any;
-    (props: any): ReactElement;
+    readme: {
+        content: string;
+        encoding: string;
+    };
 }
 // 动态加载
 const MarkDownRenderer = dynamic(() => import('$components/MarkDownRenderer'));
 
-let Detail: IDetail = function(props) {
+const Detail: INextFC<IDetail> = function(props) {
     const { content, encoding } = props.readme;
     return <MarkDownRenderer content={content} isBase64={encoding === 'base64'} />;
 };

@@ -6,32 +6,28 @@ import { NextPageContext, NextPage } from 'next';
 import getConfig from 'next/config';
 import { useRouter, NextRouter } from 'next/router';
 
+import { INextFC } from '$interface';
 import { request } from '$lib/request';
-import { Repo } from '$components/repo';
 import cache from '$lib/cache';
+import { Repo } from '$components/repo';
 
-const isServer = typeof window === 'undefined';
-const { publicRuntimeConfig } = getConfig();
-
-// 用于缓存Repos & Starts的key
-const userReposKey = 'index-UserRepos';
-const userStartKey = 'index-UserStartRepos';
-interface IGetinitialProps {
-    ctx: NextPageContext;
-    reduxStore: Store;
-}
 interface IProps {
-    user: {
+    user?: {
         [param: string]: any;
     };
     userRepos: any[];
     userStartRepos: any[];
     isLogin: boolean;
-    dispatch: Dispatch;
-    getInitialProps?: IGetinitialProps;
+    // dispatch?: Dispatch;
 }
 
-let Index: NextPage<IProps> = ({ user, userRepos, userStartRepos }) => {
+// 用于缓存Repos & Starts的key
+const userReposKey = 'index-UserRepos';
+const userStartKey = 'index-UserStartRepos';
+const isServer = typeof window === 'undefined';
+const { publicRuntimeConfig } = getConfig();
+
+const Index: INextFC<IProps> = ({ user, userRepos, userStartRepos }) => {
     const router = useRouter();
     const tabKey = (router.query.tabs as string) || 'stars';
 
@@ -129,9 +125,14 @@ let Index: NextPage<IProps> = ({ user, userRepos, userStartRepos }) => {
 };
 // SSR
 Index.getInitialProps = async function({ ctx, reduxStore }) {
+    // console.log('============ props begin ====================');
+    // // console.log(Object.keys(props));
+    // console.log(arguments);
+    // console.log(ctx);
+    // console.log(reduxStore);
+    // console.log('============ props end ======================');
     const user = reduxStore.getState().user;
     if (!user || !user.id) return { isLogin: false }; // 未登录
-
     // 客户端情况,尝试优先读取缓存
     if (!isServer) {
         if (cache.getCache(userReposKey) && cache.getCache(userStartKey)) {

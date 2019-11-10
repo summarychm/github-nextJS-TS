@@ -7,16 +7,16 @@ import { useRouter, NextRouter } from 'next/router';
 import { UserInfo } from '$components/userInfo';
 import WithContainer from './withContainer'; // HOC,减少DOM层级
 import userAction from '../store/actions/user';
+import { INextFC } from '$interface';
 
 interface IProps {
     children: ReactChild;
     user: any;
     logOut?: () => void;
 }
-
 const { Header, Content, Footer } = Layout;
 
-function PageLayout({ children, user, logOut }: IProps) {
+const PageLayout: INextFC<IProps> = ({ children, user, logOut }) => {
     const router: NextRouter = useRouter();
     const urlQuery = (router.query && router.query.query) || '';
 
@@ -83,7 +83,7 @@ function PageLayout({ children, user, logOut }: IProps) {
             `}</style>
         </Layout>
     );
-}
+};
 
 const mapStateToProps = (state) => ({ user: state.user });
 

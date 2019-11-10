@@ -1,53 +1,29 @@
 import { Row, Col, Pagination, List } from 'antd';
-import { withRouter, NextRouter } from 'next/router';
+import { NextRouter, useRouter } from 'next/router';
 import getConfig from 'next/config';
 
+import { INextFC } from '$interface';
 import { request } from '$lib/request';
 import { noop } from '$lib/utils';
 import { getQueryString } from '$lib/getQueryString';
+
 import FilterLink from './FilterLink';
 import { Repo } from '$components/repo';
 
-const LANGUAGES = ['JavaScript', 'HTML', 'CSS', 'TypeScript', 'Java', 'Rust'];
-const SORT_TYPES = [
-    {
-        name: 'Best Match'
-    },
-    {
-        name: 'Most Stars',
-        value: 'stars',
-        order: 'desc'
-    },
-    {
-        name: 'Fewest Stars',
-        value: 'stars',
-        order: 'asc'
-    },
-    {
-        name: 'Most Forks',
-        value: 'forks',
-        order: 'desc'
-    },
-    {
-        name: 'Fewest Forks',
-        value: 'forks',
-        order: 'asc'
-    }
-];
 const selectedItemStyle = {
     borderLeft: '2px solid #e36209',
     fontWeight: 100
 };
 const { publicRuntimeConfig } = getConfig();
-
-// const isServer = typeof window === "undefined";
 const per_page = publicRuntimeConfig.per_count;
+
 interface IProps {
     router: NextRouter;
     repos: any;
 }
 
-function Search({ router, repos }: IProps) {
+const Search: INextFC<IProps> = function({ repos }) {
+    const router: NextRouter = useRouter();
     const { ...querys } = router.query;
     const { lang, sort, order, page } = router.query;
     return (
@@ -55,51 +31,8 @@ function Search({ router, repos }: IProps) {
             <Row gutter={20}>
                 {/* left - searchOptions */}
                 <Col span={6}>
-                    <List
-                        bordered
-                        header={<span className="list-header">所用语言</span>}
-                        style={{ marginBottom: 20 }}
-                        dataSource={LANGUAGES}
-                        renderItem={(item) => {
-                            const selected = lang === item;
-                            return (
-                                <List.Item style={selected ? selectedItemStyle : null}>
-                                    {selected ? (
-                                        <span>{item}</span>
-                                    ) : (
-                                        <FilterLink {...querys} lang={item} name={item} />
-                                    )}
-                                </List.Item>
-                            );
-                        }}
-                    />
-                    <List
-                        bordered
-                        header={<span className="list-header">排序</span>}
-                        dataSource={SORT_TYPES}
-                        renderItem={(item) => {
-                            let selected = false;
-                            if (item.name === 'Best Match' && !sort) {
-                                selected = true;
-                            } else if (item.value === sort && item.order === order) {
-                                selected = true;
-                            }
-                            return (
-                                <List.Item style={selected ? selectedItemStyle : null}>
-                                    {selected ? (
-                                        <span>{item.name}</span>
-                                    ) : (
-                                        <FilterLink
-                                            {...querys}
-                                            sort={item.value}
-                                            order={item.order}
-                                            name={item.name}
-                                        />
-                                    )}
-                                </List.Item>
-                            );
-                        }}
-                    />
+                    <LanguageSoft lang={lang} querys={querys} />
+                    <MatchSoft sort={sort} order={order} querys={querys} />
                 </Col>
                 {/* right- searchList */}
                 <Col span={18}>
@@ -145,7 +78,7 @@ function Search({ router, repos }: IProps) {
             `}</style>
         </>
     );
-}
+};
 Search.getInitialProps = async ({ ctx }) => {
     const { query } = ctx.query;
     if (!query) return { repos: { total_count: 0 } };
@@ -157,4 +90,84 @@ Search.getInitialProps = async ({ ctx }) => {
     return { repos: result.data };
 };
 
-export default withRouter(Search);
+const LanguageSoft = ({ lang, querys }) => {
+    const LANGUAGES = ['JavaScript', 'HTML', 'CSS', 'TypeScript', 'Java', 'Rust'];
+    return (
+        <List
+            bordered
+            header={<span className="list-header">所用语言</span>}
+            style={{ marginBottom: 20 }}
+            dataSource={LANGUAGES}
+            renderItem={(item) => {
+                const selected = lang === item;
+                return (
+                    <List.Item style={selected ? selectedItemStyle : null}>
+                        {selected ? (
+                            <span>{item}</span>
+                        ) : (
+                            <FilterLink {...querys} lang={item} name={item} />
+                        )}
+                    </List.Item>
+                );
+            }}
+        />
+    );
+};
+
+const MatchSoft = ({ sort, order, querys }) => {
+    const SORT_TYPES = [
+        {
+            name: 'Best Match'
+        },
+        {
+            name: 'Most Stars',
+            value: 'stars',
+            order: 'desc'
+        },
+        {
+            name: 'Fewest Stars',
+            value: 'stars',
+            order: 'asc'
+        },
+        {
+            name: 'Most Forks',
+            value: 'forks',
+            order: 'desc'
+        },
+        {
+            name: 'Fewest Forks',
+            value: 'forks',
+            order: 'asc'
+        }
+    ];
+    return (
+        <List
+            bordered
+            header={<span className="list-header">排序</span>}
+            dataSource={SORT_TYPES}
+            renderItem={(item) => {
+                let selected = false;
+                if (item.name === 'Best Match' && !sort) {
+                    selected = true;
+                } else if (item.value === sort && item.order === order) {
+                    selected = true;
+                }
+                return (
+                    <List.Item style={selected ? selectedItemStyle : null}>
+                        {selected ? (
+                            <span>{item.name}</span>
+                        ) : (
+                            <FilterLink
+                                {...querys}
+                                sort={item.value}
+                                order={item.order}
+                                name={item.name}
+                            />
+                        )}
+                    </List.Item>
+                );
+            }}
+        />
+    );
+};
+export default Search;

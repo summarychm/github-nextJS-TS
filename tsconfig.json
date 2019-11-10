@@ -35,6 +35,9 @@
       "$lib/*": [
         "./lib/*"
       ],
+      "$interface": [
+        "./interface/index.ts"
+      ],
       "@/*": [
         "./*"
       ],

@@ -1,6 +1,6 @@
 import { isValidElement, ReactElement } from 'react';
-import { List } from 'antd';
 import Link from 'next/link';
+
 import { getQueryString } from '$lib/getQueryString';
 
 interface IProps {
