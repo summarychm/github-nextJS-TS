@@ -59,7 +59,7 @@
         "koa-router": "^7.4.0",
         "koa-session": "^5.12.3",
         "markdown-it": "^10.0.0",
-        "moment": "^2.24.0",
+        "moment": "^2.29.4",
         "next": "^9.1.1",
         "react": "^16.11.0",
         "react-dom": "^16.11.0",
